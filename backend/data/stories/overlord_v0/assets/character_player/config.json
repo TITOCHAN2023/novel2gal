@@ -1,0 +1,12 @@
+{
+  "id": "player",
+  "name": "旅人",
+  "aliases": [],
+  "identity": "旅人",
+  "traits": [
+    "好奇",
+    "适应力强"
+  ],
+  "speech_style": "平和，偶尔惊讶",
+  "appearance_summary": "ordinary looking traveler"
+}

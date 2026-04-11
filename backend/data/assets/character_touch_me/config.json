@@ -1,0 +1,24 @@
+{
+  "id": "touch_me",
+  "name": "塔其·米",
+  "aliases": [
+    "集团长"
+  ],
+  "age": "",
+  "identity": "集团创始人 / 负责人 / 银色圣骑士",
+  "traits": [
+    "直爽（通常）",
+    "含糊（特定状态）",
+    "威严",
+    "责任感",
+    "高效",
+    "独断 (潜在)"
+  ],
+  "speech_style": "平时简洁直接且具有领导力，但在犹豫时会变得支支吾吾且多用填充词。",
+  "abilities": [
+    "圣骑士战斗技巧",
+    "组织领导力",
+    "情报统筹"
+  ],
+  "appearance_summary": "A silver armored paladin with insectoid limbs, wearing a flowing red cape, majestic and otherworldly appearance."
+}

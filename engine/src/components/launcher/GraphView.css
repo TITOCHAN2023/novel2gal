@@ -1,0 +1,165 @@
+.graph-view {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(8, 8, 16, 0.97);
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-view__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.graph-view__header h3 {
+  margin: 0;
+  color: #e8c170;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.graph-view__legend {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.graph-legend {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.graph-view__close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.graph-view__close:hover {
+  color: #e8c170;
+}
+
+.graph-view__container {
+  flex: 1;
+  position: relative;
+}
+
+.graph-view__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+}
+
+/* 节点/边详情面板 */
+.graph-view__detail {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(15, 15, 30, 0.95);
+  border: 1px solid rgba(232, 193, 112, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.graph-view__detail strong {
+  color: #e8c170;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.graph-detail__type {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.graph-detail__section {
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+}
+
+.graph-detail__section-title {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.graph-detail__traits {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin: 4px 0;
+}
+
+.graph-detail__desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.graph-detail__card {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  margin: 6px 0 0;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.graph-detail__field {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  margin: 3px 0;
+}
+
+.graph-detail__field-key {
+  color: rgba(255, 255, 255, 0.35);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.graph-detail__field-val {
+  color: rgba(255, 255, 255, 0.7);
+  word-break: break-all;
+}
+
+/* 滚动条 */
+.graph-view__detail::-webkit-scrollbar,
+.graph-detail__card::-webkit-scrollbar {
+  width: 3px;
+}
+
+.graph-view__detail::-webkit-scrollbar-thumb,
+.graph-detail__card::-webkit-scrollbar-thumb {
+  background: rgba(232, 193, 112, 0.2);
+  border-radius: 2px;
+}

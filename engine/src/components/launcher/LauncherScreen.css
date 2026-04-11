@@ -1,0 +1,238 @@
+.launcher-screen {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a14 0%, #12122a 40%, #1a1a3a 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* 空状态 */
+.launcher-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.launcher-logo {
+  font-size: 56px;
+  font-weight: 300;
+  color: #e8c170;
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+}
+
+.launcher-tagline {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  margin-bottom: 48px;
+  letter-spacing: 2px;
+}
+
+/* 头部 */
+.launcher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.launcher-title {
+  font-size: 24px;
+  font-weight: 400;
+  color: #e8c170;
+  letter-spacing: 3px;
+}
+
+/* 新建按钮 */
+.launcher-new-btn {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid rgba(232, 193, 112, 0.3);
+  border-radius: 4px;
+  color: #e8c170;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.launcher-new-btn:hover {
+  background: rgba(232, 193, 112, 0.1);
+  border-color: #e8c170;
+}
+
+.launcher-new-btn--large {
+  padding: 16px 40px;
+  font-size: 16px;
+}
+
+/* 故事卡片网格 */
+.launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.story-card {
+  background: rgba(20, 20, 40, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  min-height: 140px;
+}
+
+.story-card:hover {
+  border-color: rgba(232, 193, 112, 0.3);
+  background: rgba(25, 25, 50, 0.7);
+  transform: translateY(-2px);
+}
+
+.story-card--error {
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.story-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.story-card__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #e8e8e8;
+  margin: 0;
+  flex: 1;
+  margin-right: 8px;
+}
+
+/* 状态徽章 */
+.badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.badge--ready {
+  background: rgba(105, 219, 124, 0.15);
+  color: #69db7c;
+}
+
+.badge--processing {
+  background: rgba(232, 193, 112, 0.15);
+  color: #e8c170;
+  animation: badge-pulse 1.5s ease infinite;
+}
+
+.badge--error {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff6b6b;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* 进度条 */
+.story-card__progress {
+  margin-bottom: 12px;
+}
+
+.story-card__progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.story-card__progress-fill {
+  height: 100%;
+  background: #e8c170;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.story-card__progress-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 统计 */
+.story-card__stats {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 12px;
+}
+
+/* 错误 */
+.story-card__error {
+  font-size: 12px;
+  color: #ff6b6b;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 底部 */
+.story-card__footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.story-card__date {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.story-card__graph {
+  background: none;
+  border: 1px solid rgba(232, 193, 112, 0.2);
+  border-radius: 3px;
+  color: rgba(232, 193, 112, 0.5);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.story-card:hover .story-card__graph { opacity: 1; }
+.story-card__graph:hover { color: #e8c170; border-color: #e8c170; }
+
+.story-card__delete {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.story-card:hover .story-card__delete {
+  opacity: 1;
+}
+
+.story-card__delete:hover {
+  color: #ff6b6b;
+}

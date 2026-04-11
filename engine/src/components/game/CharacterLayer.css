@@ -1,0 +1,54 @@
+.character-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.character-sprite {
+  position: absolute;
+  bottom: 0;
+  transition: left 0.5s ease, opacity 0.3s ease, filter 0.3s ease;
+  max-height: 90%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.character-sprite img {
+  max-height: 85vh;
+  width: auto;
+  object-fit: contain;
+  user-select: none;
+}
+
+/* 没有立绘时的占位符 */
+.character-placeholder {
+  width: 80px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(20, 20, 40, 0.6);
+  border: 1px solid rgba(232, 193, 112, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  margin-bottom: 200px;
+}
+
+.character-placeholder__initial {
+  font-size: 28px;
+  color: #e8c170;
+  font-weight: 300;
+}
+
+.character-placeholder__name {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

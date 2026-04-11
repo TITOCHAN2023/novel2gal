@@ -1,0 +1,38 @@
+.effect-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.effect-layer--fade {
+  background: black;
+  animation: fade-transition 0.6s ease forwards;
+}
+
+@keyframes fade-transition {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.effect-layer--blackout {
+  background: black;
+  animation: blackout-transition 0.8s ease forwards;
+}
+
+@keyframes blackout-transition {
+  0% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.effect-layer--dissolve {
+  background: white;
+  animation: dissolve-transition 0.6s ease forwards;
+}
+
+@keyframes dissolve-transition {
+  0% { opacity: 0.8; }
+  100% { opacity: 0; }
+}

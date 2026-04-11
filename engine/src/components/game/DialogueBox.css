@@ -1,0 +1,94 @@
+.dialogue-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.85) 15%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  padding: 24px 48px 32px;
+  min-height: 180px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dialogue-box--narration {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(10, 10, 30, 0.88) 15%,
+    rgba(10, 10, 30, 0.95) 100%
+  );
+}
+
+.dialogue-box--thought {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(20, 10, 30, 0.85) 15%,
+    rgba(20, 10, 30, 0.92) 100%
+  );
+}
+
+.dialogue-box__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e8c170;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dialogue-box__emotion {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(232, 193, 112, 0.5);
+  letter-spacing: 1px;
+}
+
+.dialogue-box__text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #e8e8e8;
+  white-space: pre-wrap;
+  min-height: 3.6em;
+}
+
+.dialogue-box--thought .dialogue-box__text {
+  color: #c8b8d8;
+  font-style: italic;
+}
+
+.dialogue-box__thought-mark {
+  color: #c8b8d8;
+}
+
+.dialogue-box__cursor {
+  color: #e8c170;
+  animation: cursor-blink 0.8s infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.dialogue-box__indicator {
+  position: absolute;
+  bottom: 12px;
+  right: 48px;
+  color: #e8c170;
+  font-size: 14px;
+  animation: indicator-bounce 1s ease-in-out infinite;
+}
+
+@keyframes indicator-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}

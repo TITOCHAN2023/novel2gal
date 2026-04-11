@@ -1,0 +1,6 @@
+角色立绘生成 prompt:
+角色: 佩罗罗奇诺
+外貌: Avian humanoid with a bird of prey head, large wings on back, wearing ornate glittering gold armor, surrounded by floating golden powder particles.
+需要: 全身六视图 + 脸部五视图
+
+--- 待接入真实生图 API ---

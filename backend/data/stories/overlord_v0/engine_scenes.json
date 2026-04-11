@@ -1,0 +1,565 @@
+{
+  "scene_root": {
+    "id": "scene_root",
+    "background": "",
+    "bgm": "",
+    "transition": "fade",
+    "characters": [
+      {
+        "id": "player",
+        "name": "旅人",
+        "sprite": "",
+        "position": "left",
+        "isActive": false,
+        "flipped": false
+      },
+      {
+        "id": "suzuki_satoru",
+        "name": "铃木悟",
+        "sprite": "",
+        "position": "center",
+        "isActive": false,
+        "flipped": false
+      },
+      {
+        "id": "touch_me",
+        "name": "塔其·米",
+        "sprite": "",
+        "position": "right",
+        "isActive": false,
+        "flipped": false
+      }
+    ],
+    "lines": [
+      {
+        "type": "narration",
+        "character": null,
+        "text": "会议室内的空气仿佛在瞬间凝固，塔其·米宣布的决定如同沉重的巨石投入静谧的湖心。乌尔贝特的怒火在狭小的空间内激荡，而原本热闹的圆桌现在只剩下令人不安的死寂。"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "*环顾四周* 这里的情况……好像比我想象中要糟糕。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "那个，我刚才是不是错过了什么重要的事情？",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "啊－",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "skeleton_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "简单来说就是……集团突然宣布解散了。",
+        "emotion": "sad",
+        "emotion_intensity": 4,
+        "outfit": "skeleton_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "*看向争吵的两人* 情况确实有点糟糕呢。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "skeleton_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*稍微挺起胸膛，尽量维持威严* 没错，就是这样。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "虽然听起来很突然……但这个决定我已经考虑过了。",
+        "emotion": "worried",
+        "emotion_intensity": 3,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*有些局促地避开乌尔贝特的视线* 那个，现在讨论这个太早了。",
+        "emotion": "shy",
+        "emotion_intensity": 4,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "塔其·米刻意避开视线的局促姿态，反而让空气中紧绷的弦被拉到了极限。乌尔贝特地狱般的沉默与铃木悟无奈的叹息交织在一起，将会议室内的压抑氛围推向了顶峰。"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "*猛然拍桌* 太早了？你管这叫考虑过了？！",
+        "emotion": "angry",
+        "emotion_intensity": 9,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "为了你的个人心血来随意决定集团的生死，简直是独断专行的极致。",
+        "emotion": "angry",
+        "emotion_intensity": 8,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "在这种时候避开我的视线，你真以为这样就能掩盖你的无能吗？",
+        "emotion": "angry",
+        "emotion_intensity": 7,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*身体周围的金粉飘散着* 哎呀，气氛真是糟糕到极点呢。",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "乌尔贝特桑，在这种时候拍桌子可一点也不优雅哦。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*无奈地叹了口气* 话说回来，解散这种事真的不能商量一下吗？",
+        "emotion": "sad",
+        "emotion_intensity": 5,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "*有些局促地看向周围* 那个……",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "虽然我才刚到这里，但现在的气氛真的好可怕。",
+        "emotion": "surprised",
+        "emotion_intensity": 6,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "大家能先冷静下来谈谈吗？",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "旅人的试探性发声在凝重的空气中显得格外单薄，并未能化解僵局，反而让几道审视的目光在圆桌之间交错。 乌尔贝特紧绷的肩膀在粗重的呼吸中微微起伏，而塔其·米则面无表情地维持着沉默，会议室内陷入了一种风暴前夕般的诡异平静。"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "啊－……",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "skeleton_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "*轻轻挥了挥手* 好了，乌尔贝特，先冷静一点吧。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "skeleton_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "在这种气氛下讨论可没什么进展，大家还是先听塔其·米解释一下吧。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "skeleton_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*低头避开视线，手指局促地敲击着铠甲*",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "那个……关于这个决定，我确实是经过考虑的。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "但是……现在解释起来可能有点……麻烦。",
+        "emotion": "shy",
+        "emotion_intensity": 5,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "*猛地拍桌子* 麻烦？！你管这叫‘麻烦’？",
+        "emotion": "angry",
+        "emotion_intensity": 9,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "这种独断专行的决定，简直是对我们所有人的侮辱。",
+        "emotion": "angry",
+        "emotion_intensity": 8,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "给我把理由说清楚，否则我没兴趣听你的解释。",
+        "emotion": "neutral",
+        "emotion_intensity": 6,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "乌尔贝特愤怒的咆哮在封闭的室内回荡，震得桌面上的物件微微颤抖。塔其·米被这股气势逼得身体不由自主地后缩，局促不安地蜷缩在铠甲之中，而周围凝固的空气中弥漫着剑拔弩张的紧绷感。"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*身体周围的金粉不安地飘散* 哎呀，气氛变得糟糕透了呢。",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "乌尔贝特桑，虽然我也觉得很突然，但拍桌子也解决不了问题吧？",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*看向塔其·米* 快点说吧塔其·米，不然这家伙真的要暴走了。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "*好奇地环顾四周*",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "那个……虽然我是后来才到的，但这里的情况看起来很糟糕呢。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "大家能先冷静一下吗？",
+        "emotion": "shy",
+        "emotion_intensity": 4,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "啊－……",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "*轻轻挥了挥手* 乌尔贝特，冷静点，在这种场合吵架可没什么美感。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "虽然我也很在意理由，但先听塔其·米把话说完吧。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "铃木悟轻描淡写的调停像是一道微弱的缓冲带，试图在紧绷的空气中撕开一道口子。乌尔贝特虽然依旧面色阴沉，但那股几乎要将空间点燃的戾气在沉默中稍稍敛了下去，众人不约而同地将目光投向了圆桌中心的塔其·米。"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*身体微微僵硬，眼神有些飘忽* 这个……那个……",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "关于解散集团的事，我其实是……",
+        "emotion": "shy",
+        "emotion_intensity": 4,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*深吸一口气* 其实是因为我已经完成了自己的目标！",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "*猛地拍桌，发出一声巨响*",
+        "emotion": "angry",
+        "emotion_intensity": 9,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "目标？这种理由简直荒谬到极点！",
+        "emotion": "angry",
+        "emotion_intensity": 10,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "你竟然为了个人的私欲，就随口决定整个集团的生死？！",
+        "emotion": "angry",
+        "emotion_intensity": 8,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*身体周围的金粉微微飘散* 哎呀，这种气氛真是糟糕透了。",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "虽然目标达成确实是个理由，但在这种时候突然宣布也太没美感了吧？",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*看向乌尔贝特* 那个，乌尔贝特桑，稍微把音量降低一点好吗？",
+        "emotion": "sad",
+        "emotion_intensity": 5,
+        "outfit": "golden_armor"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "乌尔贝特剧烈起伏的胸口昭示着他尚未平息的怒火，而佩罗罗奇诺虽然语气轻佻，但那双狭长的眼睛里却闪过一丝审视。在两人紧绷的对峙之间，塔其·米依然维持着那副冷漠且不可撼动的姿态，令会议室内的压抑感攀升到了顶点。"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "*有些局促地看向四周* 那个……",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "这里的气氛比我想象中要紧张得多啊。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "旅人",
+        "text": "*小声嘀咕* 我是不是来得不是时候？",
+        "emotion": "shy",
+        "emotion_intensity": 5,
+        "outfit": "traveler_clothes"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "啊－……",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "*看向乌尔贝特* 那个，乌尔贝特桑，稍微冷静一点吧。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟",
+        "text": "虽然确实很突然，但一直吵下去也没什么意义吧？",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "skeleton_mage"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*沉默地低头看着自己的铠甲* 这个……",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "我明白你们的想法，但既然目标已经达成，维持现状就没意义了。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其·米",
+        "text": "*抬头看向众人* 这次决定……确实是我独断了。",
+        "emotion": "shy",
+        "emotion_intensity": 5,
+        "outfit": "silver_armor"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "塔其·米坦承的态度让紧绷的空气稍有缓和，但圆桌周围依然弥漫着难以掩饰的尴尬与低气压。乌尔贝特的呼吸声在死寂的房间里显得格外沉重，而众人复杂的目光在沉默中交织。"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "*发出一声冷笑* 现在才意识到自己是独断吗？",
+        "emotion": "angry",
+        "emotion_intensity": 8,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "在这种时候谈‘意义’，简直是对我们所有人的侮辱。",
+        "emotion": "angry",
+        "emotion_intensity": 9,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "Ulbert",
+        "text": "你打算怎么补偿那些因为你的任性而离开的成员？",
+        "emotion": "neutral",
+        "emotion_intensity": 6,
+        "outfit": "demon_form"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*身体周围的金粉微微飘散* 哎呀呀，气氛变得好糟糕。",
+        "emotion": "worried",
+        "emotion_intensity": 6,
+        "outfit": "gold_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "虽然塔其·米桑的行为确实很任性，但乌尔贝特桑也太激进了吧？",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "gold_armor"
+      },
+      {
+        "type": "dialogue",
+        "character": "佩罗罗奇诺",
+        "text": "*看向飞鼠* 呐，悟桑，现在插话的话会被波及吗？",
+        "emotion": "worried",
+        "emotion_intensity": 7,
+        "outfit": "gold_armor"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "空气中弥漫着紧绷的火药味与微妙的慵懒感。此时，所有人的目光在无形中都向你移来，等待着你的反应。"
+      }
+    ],
+    "choices": [
+      {
+        "text": "尝试调解乌尔贝特和塔其·米桑的矛盾",
+        "targetScene": "scene_root_c0"
+      },
+      {
+        "text": "顺着佩罗罗奇诺的话，用轻松的方式化解尴尬",
+        "targetScene": "scene_root_c1"
+      },
+      {
+        "text": "保持沉默，观察这场争执的走向",
+        "targetScene": "scene_root_choice_2"
+      }
+    ],
+    "depth": 0,
+    "parentId": null,
+    "_story_summary": "\n场景scene_root: 会议室内的空气仿佛在瞬间凝固，塔其·米宣布的决定如同沉重的巨石投入静谧的湖心。乌尔贝特的怒火在狭小的空间内激荡，而原本热闹的圆桌现在只剩下令人不安的死寂。 旅人: *环顾四周* 这里的情况……好像比我想象中要糟糕。 旅人: 那个，我刚才是不是错过了什么重要的事情？ 铃木悟: 啊－ 铃木悟: 简单来说就是……集团突然宣布解散了。"
+  }
+}

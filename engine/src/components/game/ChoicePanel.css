@@ -1,0 +1,157 @@
+.choice-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  animation: choice-fade-in 0.3s ease;
+}
+
+@keyframes choice-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.choice-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.choice-panel__btn {
+  position: relative;
+  padding: 16px 32px;
+  background: rgba(20, 20, 40, 0.85);
+  border: 1px solid rgba(232, 193, 112, 0.3);
+  border-radius: 4px;
+  color: #e8e8e8;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  letter-spacing: 1px;
+}
+
+.choice-panel__btn:hover {
+  background: rgba(40, 30, 60, 0.9);
+  border-color: #e8c170;
+  color: #e8c170;
+  transform: translateX(8px);
+}
+
+.choice-panel__btn:active {
+  transform: translateX(8px) scale(0.98);
+}
+
+.choice-panel__btn::before {
+  content: '▸';
+  margin-right: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.choice-panel__btn:hover::before {
+  opacity: 1;
+}
+
+.choice-panel__btn-hint {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.choice-panel__btn:hover .choice-panel__btn-hint {
+  opacity: 1;
+}
+
+/* 备注输入面板 */
+.choice-annotation {
+  width: 500px;
+  max-width: 90%;
+  background: rgba(15, 15, 30, 0.95);
+  border: 1px solid rgba(232, 193, 112, 0.3);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.choice-annotation__selected {
+  color: #e8c170;
+  font-size: 16px;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.choice-annotation__prompt {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.choice-annotation__input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: #e8e8e8;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.choice-annotation__input:focus {
+  border-color: rgba(232, 193, 112, 0.4);
+}
+
+.choice-annotation__input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.choice-annotation__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: flex-end;
+}
+
+.choice-annotation__btn {
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.choice-annotation__btn--submit {
+  background: rgba(232, 193, 112, 0.2);
+  border: 1px solid rgba(232, 193, 112, 0.4);
+  color: #e8c170;
+}
+
+.choice-annotation__btn--submit:hover {
+  background: rgba(232, 193, 112, 0.3);
+}
+
+.choice-annotation__btn--cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.choice-annotation__btn--cancel:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+}

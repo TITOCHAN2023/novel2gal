@@ -1,0 +1,21 @@
+{
+  "id": "friend_sister",
+  "name": "泡泡茶壶",
+  "aliases": [
+    "佩罗罗奇诺的姐姐",
+    "Kaze亲"
+  ],
+  "age": "",
+  "identity": "史莱姆 / 佩罗罗奇诺的姐姐",
+  "traits": [
+    "自信",
+    "自认为恶心可爱",
+    "活跃",
+    "追求可爱感"
+  ],
+  "speech_style": "声音安详且富有感情，语气俏皮并带有撒娇感",
+  "abilities": [
+    "快速移动"
+  ],
+  "appearance_summary": "A cute pink slime creature, soft and gelatinous texture, small and round."
+}

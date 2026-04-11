@@ -1,0 +1,228 @@
+.setup-screen {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a14 0%, #12122a 40%, #1a1a3a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.setup-back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.setup-back:hover { color: #e8c170; }
+
+.setup-content {
+  text-align: center;
+  max-width: 560px;
+  width: 90%;
+}
+
+.setup-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #e8c170;
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+}
+
+.setup-desc {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+/* 拖拽区域 */
+.setup-dropzone {
+  border: 2px dashed rgba(232, 193, 112, 0.2);
+  border-radius: 12px;
+  padding: 60px 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.setup-dropzone:hover, .setup-dropzone--active {
+  border-color: #e8c170;
+  background: rgba(232, 193, 112, 0.05);
+}
+
+.setup-dropzone--uploading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.setup-dropzone__icon {
+  font-size: 40px;
+  color: rgba(232, 193, 112, 0.4);
+  line-height: 1;
+}
+
+.setup-dropzone__text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+}
+
+.setup-dropzone__hint {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 12px;
+}
+
+/* 步进条 */
+.setup-stepper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 40px 0 32px;
+}
+
+.setup-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 120px;
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+
+.setup-step--done { opacity: 0.7; }
+.setup-step--current { opacity: 1; }
+
+.setup-step__circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(232, 193, 112, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.setup-step--done .setup-step__circle {
+  border-color: #69db7c;
+  color: #69db7c;
+}
+
+.setup-step--current .setup-step__circle {
+  border-color: #e8c170;
+  color: #e8c170;
+  animation: step-pulse 1.5s ease infinite;
+}
+
+@keyframes step-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 193, 112, 0.3); }
+  50% { box-shadow: 0 0 12px 4px rgba(232, 193, 112, 0.15); }
+}
+
+.setup-step__label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.setup-step--current .setup-step__label { color: #e8c170; }
+
+/* 阶段进度条 */
+.setup-phase-progress { margin-bottom: 24px; }
+
+.setup-phase-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.setup-phase-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e8c170, #f0d090);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.setup-phase-detail {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  margin: 0;
+}
+
+.setup-hint {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+  margin-top: 32px;
+}
+
+/* 完成状态 */
+.setup-done { margin-top: 32px; }
+
+.setup-done__icon {
+  font-size: 48px;
+  color: #69db7c;
+  margin-bottom: 16px;
+}
+
+.setup-done__text {
+  font-size: 20px;
+  color: #e8e8e8;
+  margin-bottom: 12px;
+}
+
+.setup-done__stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+.setup-play-btn {
+  padding: 14px 48px;
+  background: rgba(232, 193, 112, 0.15);
+  border: 1px solid #e8c170;
+  border-radius: 4px;
+  color: #e8c170;
+  font-size: 16px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.setup-play-btn:hover {
+  background: rgba(232, 193, 112, 0.25);
+  transform: scale(1.02);
+}
+
+/* 错误状态 */
+.setup-error { margin-top: 32px; }
+.setup-error__text { color: #ff6b6b; font-size: 14px; margin-bottom: 16px; }
+
+.setup-retry-btn {
+  padding: 10px 32px;
+  background: transparent;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 4px;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+.setup-retry-btn:hover { border-color: #ff6b6b; }

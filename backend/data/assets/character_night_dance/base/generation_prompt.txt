@@ -1,0 +1,6 @@
+角色立绘生成 prompt:
+角色: 夜舞子
+外貌: Ugly appearance, Nephilim giantess, towering height, contrasting with a peaceful expression.
+需要: 全身六视图 + 脸部五视图
+
+--- 待接入真实生图 API ---

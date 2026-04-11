@@ -1,0 +1,21 @@
+{
+  "id": "emerald_tablet",
+  "name": "Emerald Tablet",
+  "aliases": [],
+  "age": "未知",
+  "identity": "头脑派成员 / 情报分析员",
+  "traits": [
+    "理性冷静",
+    "怀疑论者",
+    "严谨",
+    "非人形态"
+  ],
+  "speech_style": "先礼后兵，以逻辑质疑为主的冷淡风格",
+  "abilities": [
+    "影像资料分析",
+    "情报推演",
+    "逻辑漏洞检索",
+    "条件假设推导"
+  ],
+  "appearance_summary": "A terrifying alien-like creature wrapped in torture instruments, grotesque and unsettling appearance."
+}

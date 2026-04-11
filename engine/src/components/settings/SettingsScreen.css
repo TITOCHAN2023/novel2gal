@@ -1,0 +1,83 @@
+.settings-screen {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-panel {
+  width: 500px;
+  max-width: 90%;
+  padding: 40px;
+  background: rgba(20, 20, 40, 0.8);
+  border: 1px solid rgba(232, 193, 112, 0.15);
+  border-radius: 8px;
+}
+
+.settings-panel__title {
+  font-size: 20px;
+  color: #e8c170;
+  margin: 0 0 32px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.settings-group {
+  margin-bottom: 24px;
+}
+
+.settings-label {
+  display: block;
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.settings-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.settings-slider-row input[type='range'] {
+  flex: 1;
+  accent-color: #e8c170;
+  height: 4px;
+}
+
+.settings-hint {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  min-width: 20px;
+}
+
+.settings-value {
+  color: #e8c170;
+  font-size: 12px;
+  min-width: 48px;
+  text-align: right;
+}
+
+.settings-actions {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.settings-back-btn {
+  padding: 10px 32px;
+  background: rgba(232, 193, 112, 0.15);
+  border: 1px solid rgba(232, 193, 112, 0.3);
+  border-radius: 4px;
+  color: #e8c170;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.settings-back-btn:hover {
+  background: rgba(232, 193, 112, 0.25);
+  border-color: #e8c170;
+}

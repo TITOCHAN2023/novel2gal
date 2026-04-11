@@ -1,0 +1,137 @@
+.progress-indicator {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  background: rgba(10, 10, 20, 0.85);
+  border: 1px solid rgba(232, 193, 112, 0.2);
+  border-radius: 8px;
+  padding: 10px 16px;
+  min-width: 200px;
+  max-width: 320px;
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.progress-indicator--minimized {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 6px;
+  cursor: pointer;
+  background: rgba(10, 10, 20, 0.7);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+
+.progress-indicator__minimize {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.progress-indicator__minimize:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* 状态圆点 */
+.progress-indicator__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.progress-indicator__dot--generating {
+  background: #e8c170;
+  animation: dot-pulse 1.5s ease infinite;
+}
+
+.progress-indicator__dot--warning {
+  background: #ffa94d;
+  animation: dot-pulse 2s ease infinite;
+}
+
+.progress-indicator__dot--ok {
+  background: #69db7c;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232, 193, 112, 0.4); }
+  50% { opacity: 0.6; box-shadow: 0 0 8px 2px rgba(232, 193, 112, 0.2); }
+}
+
+/* 等待中 */
+.progress-indicator__waiting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e8c170;
+}
+
+.progress-indicator__spinner {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(232, 193, 112, 0.3);
+  border-top-color: #e8c170;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 流水线进度 */
+.progress-indicator__pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-indicator__phase {
+  color: #e8c170;
+  font-size: 12px;
+}
+
+.progress-indicator__detail {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.progress-indicator__bar {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.progress-indicator__fill {
+  height: 100%;
+  background: #e8c170;
+  border-radius: 1px;
+  transition: width 0.5s ease;
+}
+
+/* Gap 距离 */
+.progress-indicator__gap {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.progress-indicator__gap--warning {
+  color: #ffa94d;
+}
+
+.progress-indicator__gap--danger {
+  color: #ff6b6b;
+}

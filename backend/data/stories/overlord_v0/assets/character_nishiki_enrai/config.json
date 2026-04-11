@@ -1,0 +1,22 @@
+{
+  "id": "nishiki_enrai",
+  "name": "贰式炎雷",
+  "aliases": [],
+  "age": "",
+  "identity": "忍者 / 飞鼠的初期同伴 / 《Aberage》高位排行者",
+  "traits": [
+    "侦察能手",
+    "外冷内热",
+    "自信",
+    "追求极致配置 (Min-Maxer)"
+  ],
+  "speech_style": "在简洁的报告风格、轻快的口语与专业的角色构建讨论之间切换",
+  "abilities": [
+    "忍术",
+    "迷宫探索",
+    "情报搜集",
+    "极高隐密潜行",
+    "攻击特化 (一击必杀)"
+  ],
+  "appearance_summary": "A ninja wearing outdated gear, face covered with a mask, two swords strapped to the waist."
+}

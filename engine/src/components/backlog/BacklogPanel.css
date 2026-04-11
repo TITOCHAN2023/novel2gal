@@ -1,0 +1,94 @@
+.backlog-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: backlog-fade-in 0.2s ease;
+}
+
+@keyframes backlog-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.backlog-panel {
+  width: 700px;
+  max-width: 90%;
+  max-height: 80%;
+  background: rgba(15, 15, 30, 0.95);
+  border: 1px solid rgba(232, 193, 112, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.backlog-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.backlog-panel__header h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #e8c170;
+  font-weight: 500;
+}
+
+.backlog-panel__close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.backlog-panel__close:hover {
+  color: #e8c170;
+}
+
+.backlog-panel__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+}
+
+.backlog-panel__empty {
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 32px;
+}
+
+.backlog-entry {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  line-height: 1.6;
+}
+
+.backlog-entry__name {
+  color: #e8c170;
+  font-weight: 600;
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.backlog-entry__text {
+  color: #ddd;
+  font-size: 14px;
+}
+
+.backlog-entry--narration .backlog-entry__text {
+  color: #aaa;
+}
+
+.backlog-entry--thought .backlog-entry__text {
+  color: #c8b8d8;
+  font-style: italic;
+}
