@@ -1,0 +1,19 @@
+{
+  "id": "cuidian_lu",
+  "name": "未知",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "头脑派",
+    "质疑精神",
+    "神秘",
+    "具有压迫感"
+  ],
+  "speech_style": "语气高傲，逻辑严密，习惯性地对他人（尤其是发现重要信息的人）提出尖锐的质疑和挑战。",
+  "abilities": [
+    "极强的分析和质疑能力",
+    "对环境/现象机制的理论推测能力"
+  ],
+  "appearance_summary": "A terrifying alien figure, equipped with a body that resembles torture devices. (Focus on the unsettling, mechanical/torture-device aesthetic.)"
+}

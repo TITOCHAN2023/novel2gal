@@ -19,6 +19,40 @@
       "chunks": 31,
       "characters": 11,
       "scenes": 1
+    },
+    "settings": {
+      "player_role": "",
+      "initial_depth": 2,
+      "gap": 3,
+      "max_branches": 2
+    }
+  },
+  "6d89adc180bc": {
+    "id": "6d89adc180bc",
+    "title": "Overlord 第00卷",
+    "author": "",
+    "filename": "Overlord+第00卷.epub",
+    "created_at": "2026-04-12T08:47:16.291661+00:00",
+    "updated_at": "2026-04-12T10:03:56.487317+00:00",
+    "status": "playable",
+    "progress": {
+      "phase": 4,
+      "phase_name": "正在编写第一章...",
+      "detail": "生成剧情树",
+      "percent": 20
+    },
+    "error": null,
+    "stats": {
+      "chapters": 0,
+      "chunks": 0,
+      "characters": 0,
+      "scenes": 0
+    },
+    "settings": {
+      "player_role": "铃木悟",
+      "initial_depth": 2,
+      "gap": 3,
+      "max_branches": 2
     }
   }
 }

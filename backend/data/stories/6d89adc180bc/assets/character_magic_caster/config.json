@@ -1,0 +1,18 @@
+{
+  "id": "magic_caster",
+  "name": "未命名法师/魔法施展者",
+  "aliases": [],
+  "age": "",
+  "identity": "魔法使用者/探索者",
+  "traits": [
+    "谨慎",
+    "专注",
+    "探究心强",
+    "专业"
+  ],
+  "speech_style": "（无代表性对话）",
+  "abilities": [
+    "魔法搜索（用于寻找隐藏的机关或入口）"
+  ],
+  "appearance_summary": ""
+}

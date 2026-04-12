@@ -1,0 +1,26 @@
+{
+  "id": "boss_unknown",
+  "name": "BOSS (未命名)",
+  "aliases": [],
+  "age": "",
+  "identity": "强大敌人/Boss",
+  "traits": [
+    "高傲",
+    "强大",
+    "具威胁性",
+    "多变",
+    "不服输"
+  ],
+  "speech_style": "充满挑衅和优越感的宣告式语气，并在劣势时带有愤怒的嘲讽。",
+  "abilities": [
+    "超强防御力（可抵挡范围技能）",
+    "六手战斗系统（剑/火焰、斧/冷气、枪/雷、棍棒/酸、弓箭）",
+    "无法回避的范围技能《太阳的爆发》",
+    "持续追击前线目标",
+    "召唤大规模元素攻击（如<土星的大流星>）",
+    "模拟防御机制（如<耶利哥之墙>）",
+    "召唤高等级下属/元素精灵群",
+    "可根据战局变化调整攻击模式，并存在被关键打击后出现裂痕的弱点。"
+  ],
+  "appearance_summary": "A towering boss, nearly five meters tall, with an Asura-like appearance. It wears intricate armor and possesses six hands. Four hands wield weapons (sword, axe, spear, staff) imbued with elements (flame, cold air, lightning, acid), while the remaining two hold a bow and arrows."
+}

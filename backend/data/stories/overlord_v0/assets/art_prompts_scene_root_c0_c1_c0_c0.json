@@ -1,0 +1,32 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 shot of a modern, slightly opulent conference room. The room has dark wood paneling, polished mahogany tables, and several high-backed executive chairs. There are large windows in the background, suggesting daylight (daytime), allowing soft, diffused natural light to enter, casting subtle shadows. Scattered on the table are documents, water glasses, and scattered debris from a minor argument—like slightly crumpled papers or discarded pens—to suggest recent tension. The atmosphere should transition from tense confusion to intense, shared curiosity, subtly illuminated by the focus on an unseen central point (the 'Nasalica Underground Tomb'). Cinematic composition, highly detailed, light novel illustration style.",
+    "negative_prompt": "people, characters, messy clutter, graffiti, extreme shadows, cartoonish, low resolution"
+  },
+  "character_sprites": [
+    {
+      "character_id": "sato",
+      "character_name": "铃木悟",
+      "prompt": "Full-body character sprite of Sato. Japanese anime/light novel illustration style, highly detailed, high quality. He is depicted in a thoughtful, slightly intense pose, looking forward (towards the viewer or slightly past). His expression shows a mix of deep interest and cautious excitement, drawn by the mention of 'Nasalica Underground Tomb'. He should be wearing his usual attire (describe typical outfit if known, otherwise assume smart-casual/modern clothes appropriate for a conference setting). The lighting should match the soft daylight filtering into the background room. White or pure solid color background.",
+      "negative_prompt": "blurry, distorted limbs, bad anatomy, ugly, text, signature, overly dramatic poses"
+    },
+    {
+      "character_id": "ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full-body character sprite of Ulbert. Japanese anime/light novel illustration style, highly detailed, high quality. He is shown in a posture of focused attention and slight eagerness, leaning forward slightly as if about to speak or react strongly to the topic. His expression is one of profound curiosity mixed with determination regarding the tomb. Consistent character design, wearing his characteristic attire (assume professional/adventurer blend). The lighting should be consistent with soft daylight. White or pure solid color background.",
+      "negative_prompt": "blurry, distorted limbs, bad anatomy, ugly, text, signature, overly aggressive poses"
+    },
+    {
+      "character_id": "perorocchino",
+      "character_name": "佩罗罗奇诺",
+      "prompt": "Half-body character sprite of Perorocchino. Japanese anime/light novel illustration style, highly detailed, high quality. He is portrayed with an intense, almost mesmerized gaze directed forward, reflecting the allure of the underground tomb. His posture is one of captivated interest. Maintain consistent character design and appropriate clothing for a modern setting mixed with his established lore elements if applicable (otherwise stick to sophisticated attire). The lighting should be soft daylight. White or pure solid color background.",
+      "negative_prompt": "blurry, distorted limbs, bad anatomy, ugly, text, signature, overly casual expression"
+    },
+    {
+      "character_id": "tachi-mi",
+      "character_name": "塔其·米",
+      "prompt": "Full-body character sprite of Tachi-Mi. Japanese anime/light novel illustration style, highly detailed, high quality. She is depicted in a posture that suggests careful consideration and intellectual engagement regarding the tomb's mystery. Her expression is sharp, intelligent, and deeply intrigued. Ensure her outfit adheres to the established aesthetic (assuming slightly more practical or academic wear for this context). The lighting should mimic soft daylight. White or pure solid color background.",
+      "negative_prompt": "blurry, distorted limbs, bad anatomy, ugly, text, signature, overly emotional expression"
+    }
+  ]
+}

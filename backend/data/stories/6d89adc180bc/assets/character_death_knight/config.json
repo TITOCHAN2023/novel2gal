@@ -1,0 +1,18 @@
+{
+  "id": "death_knight",
+  "name": "死亡骑士",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "承担仇恨值",
+    "战术执行者",
+    "保护性"
+  ],
+  "speech_style": "（无直接对话）",
+  "abilities": [
+    "吸收/承受仇恨值",
+    "吸引目标注意力"
+  ],
+  "appearance_summary": ""
+}

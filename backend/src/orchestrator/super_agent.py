@@ -18,13 +18,16 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass, field
+from typing import Callable
 
 try:
     from ..config.llm_client import LLMClient
     from ..agent.character_agent import CharacterAgent
+    from .schemas import SCENE_PLAN_SCHEMA, CHOICE_POINT_SCHEMA, MEMORY_UPDATE_SCHEMA, ART_DIRECTION_SCHEMA
 except ImportError:
     from config.llm_client import LLMClient
     from agent.character_agent import CharacterAgent
+    from orchestrator.schemas import SCENE_PLAN_SCHEMA, CHOICE_POINT_SCHEMA, MEMORY_UPDATE_SCHEMA, ART_DIRECTION_SCHEMA
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +56,8 @@ SCENE_PLAN_PROMPT = """你是一个视觉小说的导演（SuperAgent）。你�
   "characters_present": ["角色id1", "角色id2"],
   "scene_goal": "这个场景要达成的叙事目标（如：制造冲突、增进关系、揭露秘密）",
   "opening_narration": "场景开头的旁白/环境描写（2-3句，设定氛围）",
-  "tension": "low/medium/high"
+  "tension": "low/medium/high",
+  "bgm_mood": "tense/calm/happy/sad/romantic/mystery/epic/peaceful"
 }}
 ```
 
@@ -148,6 +152,7 @@ class SceneResult:
     choices: list[dict] = field(default_factory=list)
     closing_narration: str = ""
     art_prompts: dict = field(default_factory=dict)  # 美术导演生成的生图指令
+    bgm_mood: str = ""  # BGM 情绪标签 (tense/calm/happy/sad/...)
 
     def to_engine_json(self) -> dict:
         """转换为前端引擎可消费的 Scene 格式"""
@@ -181,8 +186,10 @@ class SceneResult:
 
         return {
             "id": self.scene_id,
+            "location": self.location,  # 地点ID，用于资产URL映射
             "background": "",  # 待资产系统填充
-            "bgm": "",
+            "bgm": "",  # 待 BGM 系统填充
+            "bgm_mood": self.bgm_mood,  # 情绪标签供前端 fallback
             "transition": "fade",
             "characters": characters if characters else None,
             "lines": [
@@ -285,7 +292,7 @@ class SuperAgent:
             story_so_far=story_so_far or "（游戏刚开始，还没有剧情）",
         )
 
-        plan = await self.llm.chat_json(system=prompt, user="请规划下一个场景。", temperature=0.7)
+        plan = await self.llm.chat_json(system=prompt, user="请规划下一个场景。", temperature=0.7, schema=SCENE_PLAN_SCHEMA)
 
         # 校验必要字段
         if not isinstance(plan, dict) or not plan:
@@ -338,7 +345,7 @@ class SuperAgent:
         )
 
         try:
-            result = await self.llm.chat_json(system=prompt, user="请生成本场景的生图指令。", max_tokens=2048, temperature=0.7)
+            result = await self.llm.chat_json(system=prompt, user="请生成本场景的生图指令。", max_tokens=2048, temperature=0.7, schema=ART_DIRECTION_SCHEMA)
             logger.info(f"美术导演: 生成了 {len(result.get('character_sprites', []))} 个角色 + 1 个背景的生图指令")
             return result
         except Exception as e:
@@ -364,7 +371,7 @@ class SuperAgent:
             turn_count=turn_count,
             recent_dialogue=recent_dialogue,
         )
-        result = await self.llm.chat_json(system=prompt, user="判断是否到了选择点。", temperature=0.3)
+        result = await self.llm.chat_json(system=prompt, user="判断是否到了选择点。", temperature=0.3, schema=CHOICE_POINT_SCHEMA)
         if not isinstance(result, dict):
             logger.warning(f"选择点判断返回无效类型: {type(result)}")
             return {"ready": False}
@@ -378,7 +385,7 @@ class SuperAgent:
             full_dialogue=full_dialogue,
             characters=", ".join(characters),
         )
-        result = await self.llm.chat_json(system=prompt, user="请生成记忆摘要。", temperature=0.3)
+        result = await self.llm.chat_json(system=prompt, user="请生成记忆摘要。", temperature=0.3, schema=MEMORY_UPDATE_SCHEMA)
         if not isinstance(result, dict):
             logger.warning(f"记忆更新返回无效类型: {type(result)}")
             return {}
@@ -391,6 +398,7 @@ class SuperAgent:
         character_agents: dict[str, CharacterAgent],
         max_turns: int = 25,
         min_turns_before_choice: int = 12,
+        on_lines: "Callable[[list[SceneLine]], None] | None" = None,
     ) -> SceneResult:
         """
         完整的场景生成流程：
@@ -401,22 +409,39 @@ class SuperAgent:
         4. 检测选择点
         5. 提取选项
         6. 更新记忆
+
+        on_lines: 每生成一批新对话行就回调（流式推送用）
         """
         logger.info(f"SuperAgent: 生成场景 {scene_id}")
+
+        # BGM 情绪：优先用 LLM 输出的 bgm_mood，fallback 推断
+        bgm_mood = scene_plan.get("bgm_mood", "")
+        if not bgm_mood:
+            try:
+                from assets.bgm_manager import infer_bgm_mood
+                bgm_mood = infer_bgm_mood(scene_plan)
+            except Exception:
+                bgm_mood = "calm"
 
         result = SceneResult(
             scene_id=scene_id,
             location=scene_plan.get("location", ""),
             characters_present=scene_plan.get("characters_present", []),
+            bgm_mood=bgm_mood,
         )
 
         # 开场旁白（按换行分割成多条）
         opening = scene_plan.get("opening_narration", "")
         if opening:
+            opening_lines = []
             for para in opening.split("\n"):
                 para = para.strip()
                 if para:
-                    result.lines.append(SceneLine(type="narration", text=para))
+                    line = SceneLine(type="narration", text=para)
+                    result.lines.append(line)
+                    opening_lines.append(line)
+            if on_lines and opening_lines:
+                on_lines(opening_lines)
 
         scene_context = f"地点: {scene_plan.get('location', '')}。{opening}"
         scene_goal = scene_plan.get("scene_goal", "")
@@ -440,21 +465,28 @@ class SuperAgent:
             responses = await agent.respond(self.llm, scene_context, history_text)
 
             # responses 是 list[dict]，每个元素是一句话
+            new_lines: list[SceneLine] = []
             for resp in responses:
                 text = resp.get("text", "")
                 emotion = resp.get("emotion", "")
                 intensity = resp.get("emotion_intensity", 5)
                 outfit = resp.get("outfit", "")
 
-                result.lines.append(SceneLine(
+                line = SceneLine(
                     type="dialogue",
                     character=agent.name,
                     text=text,
                     emotion=emotion,
                     emotion_intensity=intensity,
                     outfit=outfit,
-                ))
+                )
+                result.lines.append(line)
+                new_lines.append(line)
                 dialogue_history.append(f"{agent.name}: {text}")
+
+            # 流式推送本轮对话
+            if on_lines and new_lines:
+                on_lines(new_lines)
 
             turn += 1
             last_text = responses[-1].get("text", "") if responses else ""
@@ -466,11 +498,15 @@ class SuperAgent:
                     scene_context, "\n".join(dialogue_history[-6:])
                 )
                 if narration.strip():
-                    # 旁白按换行分割成多条（每条是一个独立的文本框）
+                    narration_lines: list[SceneLine] = []
                     for para in narration.strip().split("\n"):
                         para = para.strip()
                         if para:
-                            result.lines.append(SceneLine(type="narration", text=para))
+                            line = SceneLine(type="narration", text=para)
+                            result.lines.append(line)
+                            narration_lines.append(line)
+                    if on_lines and narration_lines:
+                        on_lines(narration_lines)
 
             # 检测选择点（至少过了 min_turns，之后每 5 轮检查一次）
             if turn >= min_turns_before_choice and turn % 5 == 0:
@@ -481,7 +517,10 @@ class SuperAgent:
                     result.choices = choice_check.get("choices", [])
                     closing = choice_check.get("closing_narration", "")
                     if closing:
-                        result.lines.append(SceneLine(type="narration", text=closing))
+                        closing_line = SceneLine(type="narration", text=closing)
+                        result.lines.append(closing_line)
+                        if on_lines:
+                            on_lines([closing_line])
                     logger.info(f"  选择点到达 (轮 {turn}): {len(result.choices)} 个选项")
                     break
 
@@ -513,6 +552,8 @@ class SuperAgent:
             if agent.name in memories:
                 agent.add_memory(memories[agent.name])
                 logger.info(f"  记忆更新: {agent.name} ← {memories[agent.name][:40]}...")
+                # 记忆压缩（超过阈值时自动压缩旧记忆）
+                await agent.compress_memories(self.llm)
 
         # 活角色卡迭代：根据场景事件更新角色卡（对应 project_living_card.md）
         for agent in agents_in_scene:

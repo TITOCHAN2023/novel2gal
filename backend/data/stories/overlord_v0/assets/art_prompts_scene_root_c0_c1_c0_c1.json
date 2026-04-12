@@ -1,0 +1,38 @@
+{
+  "scene_background": {
+    "prompt": "A wide, panoramic shot (16:9 aspect ratio) of a modern, somewhat sterile conference room. The atmosphere is heavy with unspoken weight and intellectual exhaustion. Architectural details should suggest permanence and finality—polished dark wood tables, muted grey or beige walls, and perhaps large, abstract art pieces that feel emotionally vacant. Natural daylight filters in through large, slightly obscured windows, creating soft but directional shadows on the polished floor. There should be a central focus point, like a large empty table or a distant window view, symbolizing an 'anchor' or a final destination. The overall mood is cool, subdued, and contemplative, devoid of high energy—the quiet after a significant, draining confrontation.",
+    "negative_prompt": "Overly dramatic lighting, intense colors, visible emotional outbursts, clutter, messy objects, cartoonish elements."
+  },
+  "character_sprites": [
+    {
+      "character_id": "旅人",
+      "character_name": "Traveler",
+      "prompt": "Full body portrait of the Traveler. Character is standing in a neutral, thoughtful posture, hands perhaps clasped loosely or hanging naturally at their sides. The expression should be subdued, conveying deep contemplation and weariness rather than anger or confusion. Clothing must maintain high detail consistency with established lore. Lighting should match the cool, diffused daylight from the scene, casting soft shadows that define the silhouette. White background for sprite sheet.",
+      "negative_prompt": "Smiling, aggressive pose, dynamic action, overly saturated colors."
+    },
+    {
+      "character_id": "铃木悟",
+      "character_name": "Sato Goro",
+      "prompt": "Half-body portrait of Sato Goro. He is depicted in a posture suggesting guarded observation—perhaps leaning slightly on an elbow or standing with his weight shifted, looking directly towards the viewer/center point but with a distant gaze. His expression should be one of intellectual assessment mixed with residual tension. Clothing details must be precise and match his established character design. Lighting should use the cool, diffused daylight tones from the conference room setting. White background for sprite sheet.",
+      "negative_prompt": "Overly emotional face, aggressive stance, bright or warm lighting."
+    },
+    {
+      "character_id": "佩罗罗奇诺",
+      "character_name": "Perorocchino",
+      "prompt": "Three-quarter body portrait of Perorocchino. The pose should be one of quiet presence—standing upright but not aggressively. The expression is contemplative, perhaps analyzing the situation rather than reacting emotionally. Maintain consistent character design details and clothing texture. Lighting must be soft daylight, highlighting contours without harsh shadows. White background for sprite sheet.",
+      "negative_prompt": "Excited pose, dramatic gestures, excessive energy."
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mi",
+      "prompt": "Full body portrait of Tachi Mi. The character stands in a composed, centered stance, suggesting resolve but also weariness from the discussion. The expression is serious and measured, reflecting deep thought about the 'endpoint.' All clothing details must be rendered with high fidelity to anime/light novel style. Lighting should mimic the subdued, cool daylight filtering into the room. White background for sprite sheet.",
+      "negative_prompt": "Angrily posed, frantic energy, bright spotlighting."
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Half-body portrait of Ulbert. The pose should be imposing yet currently restrained—standing still, observing the aftermath of the discussion. His expression is thoughtful and weighty, perhaps looking down slightly as if considering a profound truth. Ensure all costume elements are detailed and consistent with his lore. Use soft, directional daylighting that emphasizes structure. White background for sprite sheet.",
+      "negative_prompt": "Overly menacing, action pose, exaggerated facial emotion."
+    }
+  ]
+}

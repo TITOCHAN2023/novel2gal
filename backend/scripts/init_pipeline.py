@@ -1,4 +1,7 @@
 """
+⚠️ 已废弃 — 请使用 server.py 的流水线（通过前端上传/配置启动）
+此脚本使用全局路径（data/novel.db），不按故事隔离，仅供参考。
+
 Novel2Gal 初始化流水线 — 按 architecture.md 完整执行
 
 流程：

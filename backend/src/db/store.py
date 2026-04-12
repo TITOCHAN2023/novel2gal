@@ -51,7 +51,12 @@ async def _safe_query(db: AsyncSurreal, query: str, params: dict | None = None,
 
 
 class NovelStore:
-    """图数据库存储管理（嵌入式 SurrealKV，数据落盘）"""
+    """图数据库存储管理（嵌入式 SurrealKV，数据落盘）
+
+    支持 async context manager:
+        async with await NovelStore.create(...) as store:
+            await store.get_all_characters()
+    """
 
     def __init__(self, db: AsyncSurreal, asset_root: Path):
         self.db = db
@@ -60,14 +65,14 @@ class NovelStore:
     @classmethod
     async def create(
         cls,
-        db_path: str | Path = "./data/novel.db",
+        db_path: str | Path,
         namespace: str = "novel2gal",
         database: str = "world",
-        asset_root: str | Path = "./data/assets",
+        asset_root: str | Path = "",
     ) -> "NovelStore":
         db_path = Path(db_path)
         db_path.parent.mkdir(parents=True, exist_ok=True)
-        asset_root = Path(asset_root)
+        asset_root = Path(asset_root) if asset_root else db_path.parent / "assets"
         asset_root.mkdir(parents=True, exist_ok=True)
 
         db = AsyncSurreal(f"surrealkv://{db_path.resolve()}")
@@ -75,6 +80,20 @@ class NovelStore:
         logger.info(f"SurrealDB 已连接: surrealkv://{db_path.resolve()}")
         logger.info(f"资产根目录: {asset_root.resolve()}")
         return cls(db=db, asset_root=asset_root)
+
+    async def close(self):
+        """关闭数据库连接"""
+        try:
+            await self.db.close()
+            logger.debug("SurrealDB 连接已关闭")
+        except Exception as e:
+            logger.warning(f"SurrealDB 关闭异常: {e}")
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *args):
+        await self.close()
 
     # ---- 角色 ----
 
@@ -121,28 +140,30 @@ class NovelStore:
 
     async def create_event(self, event_id: str, chunk_index: int, summary: str,
                            participants: list[str], location: str, significance: str) -> None:
+        # 批量：创建事件 + 所有 RELATE 合并为一次查询
+        statements = [
+            "CREATE type::thing('event', $id) SET chunk_index=$ci, summary=$s, participants=$p, "
+            "location=$loc, significance=$sig;",
+        ]
+        params: dict = {"id": event_id, "ci": chunk_index, "s": summary,
+                        "p": participants, "loc": location, "sig": significance}
+
+        for i, cid in enumerate(participants):
+            statements.append(f"RELATE $f{i}->participates_in->$t;")
+            params[f"f{i}"] = RecordID("character", cid)
+            params["t"] = RecordID("event", event_id)
+
+        if location:
+            statements.append("RELATE $ef->occurs_at->$et;")
+            params["ef"] = RecordID("event", event_id)
+            params["et"] = RecordID("location", location)
+
         await _safe_query(
             self.db,
-            "CREATE type::thing('event', $id) SET chunk_index=$ci, summary=$s, participants=$p, "
-            "location=$loc, significance=$sig",
-            {"id": event_id, "ci": chunk_index, "s": summary,
-             "p": participants, "loc": location, "sig": significance},
+            " ".join(statements),
+            params,
             label=f"create_event:{event_id}",
         )
-        for cid in participants:
-            await _safe_query(
-                self.db,
-                "RELATE $f->participates_in->$t",
-                {"f": RecordID("character", cid), "t": RecordID("event", event_id)},
-                label=f"relate:participates_in:{cid}->{event_id}",
-            )
-        if location:
-            await _safe_query(
-                self.db,
-                "RELATE $f->occurs_at->$t",
-                {"f": RecordID("event", event_id), "t": RecordID("location", location)},
-                label=f"relate:occurs_at:{event_id}->{location}",
-            )
 
     # ---- 世界观规则 ----
 

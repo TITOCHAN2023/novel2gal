@@ -38,7 +38,8 @@ function CharacterSprite({ char }: { char: CharacterOnScreen }) {
           // emotion sprite 不存在时 fallback 到基础立绘
           const target = e.currentTarget;
           const basePath = char.sprite.replace(/outfit_[^/]+\/emotion\/.*/, 'base/sprite.png');
-          if (target.src !== basePath && basePath !== char.sprite) {
+          // target.src 是完整 URL，用 endsWith 比较相对路径
+          if (!target.src.endsWith(basePath) && basePath !== char.sprite) {
             target.src = basePath;
           }
         }}

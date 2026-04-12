@@ -207,8 +207,9 @@ marimo/_lsp/
 __marimo__/
 
 
-# design
+# docs
 docs_design/
+docs_tech/
 
 
 # AI MD

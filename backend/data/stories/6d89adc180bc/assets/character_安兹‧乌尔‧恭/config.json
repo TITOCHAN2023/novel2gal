@@ -1,0 +1,15 @@
+{
+  "id": "role_id",
+  "name": "安兹·乌尔·恭",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "核心性格特征，3-5个词"
+  ],
+  "speech_style": "一句话概括说话风格",
+  "abilities": [
+    "能力列表"
+  ],
+  "appearance_summary": "外貌概要（可用于生图prompt，英文为佳）"
+}

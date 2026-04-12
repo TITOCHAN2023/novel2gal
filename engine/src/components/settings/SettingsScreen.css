@@ -81,3 +81,10 @@
   background: rgba(232, 193, 112, 0.25);
   border-color: #e8c170;
 }
+
+.settings-sublabel {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+}

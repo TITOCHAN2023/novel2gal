@@ -48,7 +48,9 @@ def build_three_zone_context(
 
     Args:
         parse_cache_path: parse_cache.json 路径
-        start_chunk: 玩家选择的起点块索引（0=从头开始=续集模式）
+        start_chunk: 玩家选择的起点块索引
+            0 或负数 = 全部作为已发生（默认模式，适合首次游玩）
+            >0 = 从该块开始，之前为已发生，之后为潜在未来
     """
     logger.info(f"构建三时区上下文 (起点块={start_chunk})")
 
@@ -64,7 +66,7 @@ def build_three_zone_context(
     ctx.world_rules = synthesis.get("world_rules", [])
 
     if start_chunk <= 0:
-        # 续集模式（从最后开始）：全部都是已发生
+        # 默认模式：全部作为已发生区
         start_chunk = total_chunks
 
     # ---- 已发生区：起点之前的所有块 ----
@@ -86,12 +88,11 @@ def build_three_zone_context(
 
     # 角色卡：用对应版本（起点之前最后一个版本）
     for cid, versions in card_versions.items():
-        if cid in past_char_ids:
+        if cid in past_char_ids and versions:
             # 找到起点之前最后的版本
             # versions 是按块顺序积累的，取不超过 start_chunk 个
-            version_idx = min(len(versions) - 1, start_chunk - 1)
-            if version_idx >= 0:
-                ctx.character_cards[cid] = versions[version_idx]
+            version_idx = min(len(versions) - 1, max(0, start_chunk - 1))
+            ctx.character_cards[cid] = versions[version_idx]
 
     # ---- 潜在未来区：起点之后的块 ----
     future_chunks = [cr for cr in chunk_results if cr["chunk_index"] >= start_chunk]

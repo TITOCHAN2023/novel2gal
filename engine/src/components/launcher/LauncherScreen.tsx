@@ -10,8 +10,10 @@ export default function LauncherScreen() {
   const fetchStories = useLauncherStore((s) => s.fetchStories);
   const selectStory = useLauncherStore((s) => s.selectStory);
   const deleteStory = useLauncherStore((s) => s.deleteStory);
+  const refreshAssets = useLauncherStore((s) => s.refreshAssets);
   const setScreen = useGameStore((s) => s.setScreen);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState<string | null>(null);
   const [graphStoryId, setGraphStoryId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export default function LauncherScreen() {
 
   const handleStoryClick = (story: StoryEntry) => {
     selectStory(story.id);
-    if (story.status === 'ready') {
+    if (story.status === 'ready' || story.status === 'playable') {
       setScreen('title');
     } else {
       setScreen('setup');
@@ -45,9 +47,10 @@ export default function LauncherScreen() {
   const getStatusBadge = (status: StoryEntry['status']) => {
     switch (status) {
       case 'ready': return <span className="badge badge--ready">就绪</span>;
+      case 'playable': return <span className="badge badge--playable">可玩</span>;
       case 'parsing': return <span className="badge badge--processing">解析中</span>;
       case 'generating': return <span className="badge badge--processing">生成中</span>;
-      case 'uploading': return <span className="badge badge--processing">上传中</span>;
+      case 'uploading': return <span className="badge badge--processing">待配置</span>;
       case 'queued': return <span className="badge badge--processing">排队中</span>;
       case 'error': return <span className="badge badge--error">错误</span>;
       default: return null;
@@ -96,7 +99,7 @@ export default function LauncherScreen() {
               {getStatusBadge(story.status)}
             </div>
 
-            {story.status !== 'ready' && story.status !== 'error' && (
+            {story.status !== 'ready' && story.status !== 'playable' && story.status !== 'error' && story.status !== 'uploading' && (
               <div className="story-card__progress">
                 <div className="story-card__progress-bar">
                   <div
@@ -110,10 +113,11 @@ export default function LauncherScreen() {
               </div>
             )}
 
-            {story.status === 'ready' && (
+            {(story.status === 'ready' || story.status === 'playable') && (
               <div className="story-card__stats">
                 <span>{story.stats?.characters || 0} 角色</span>
                 <span>{story.stats?.scenes || 0} 场景</span>
+                {story.status === 'playable' && <span style={{color: '#e8c170'}}>生成中...</span>}
               </div>
             )}
 
@@ -123,14 +127,30 @@ export default function LauncherScreen() {
 
             <div className="story-card__footer">
               <span className="story-card__date">{formatDate(story.updated_at)}</span>
-              {story.status === 'ready' && (
-                <button
-                  className="story-card__graph"
-                  onClick={(e) => { e.stopPropagation(); setGraphStoryId(story.id); }}
-                  title="查看关系图"
-                >
-                  关系图
-                </button>
+              {(story.status === 'ready' || story.status === 'playable') && (
+                <>
+                  <button
+                    className="story-card__graph"
+                    onClick={(e) => { e.stopPropagation(); setGraphStoryId(story.id); }}
+                    title="查看关系图"
+                  >
+                    关系图
+                  </button>
+                  <button
+                    className="story-card__graph"
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      if (refreshing) return;
+                      setRefreshing(story.id);
+                      await refreshAssets(story.id);
+                      setRefreshing(null);
+                    }}
+                    disabled={refreshing === story.id}
+                    title="刷新图片资产"
+                  >
+                    {refreshing === story.id ? '...' : '刷新资产'}
+                  </button>
+                </>
               )}
               <button
                 className="story-card__delete"

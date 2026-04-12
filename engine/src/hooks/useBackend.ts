@@ -6,8 +6,8 @@
 import { useEffect, useRef } from 'react';
 import { create } from 'zustand';
 
-// 动态 WS 地址——始终用当前页面的 hostname，不硬编码 IP
-const BACKEND_WS = `ws://${window.location.hostname}:8080/ws/debug`;
+// WS 地址——统一走当前 host（dev 模式由 Vite proxy 转发到后端，prod 同源）
+const BACKEND_WS = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws/debug`;
 
 interface BackendLog {
   type: string;

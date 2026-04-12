@@ -1,0 +1,18 @@
+{
+  "id": "noobow",
+  "name": "Noobow",
+  "aliases": [],
+  "age": "",
+  "identity": "探知系特化构成的角色",
+  "traits": [
+    "监视能力",
+    "信息报告",
+    "专业"
+  ],
+  "speech_style": "语气冷静，提供环境安全评估和情报报告。",
+  "abilities": [
+    "魔法监视（探知）",
+    "物理监视确认"
+  ],
+  "appearance_summary": ""
+}

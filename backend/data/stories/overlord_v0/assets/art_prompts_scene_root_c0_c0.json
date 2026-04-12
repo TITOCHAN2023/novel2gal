@@ -1,0 +1,32 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic establishing shot of a modern, professional conference room. The style must be Japanese anime/light novel illustration, highly detailed, and high quality. The composition should be 16:9 aspect ratio, emphasizing the cold, oppressive silence in the air. Focus on architectural details—long polished mahogany or dark wood conference table dominating the center, uncomfortable-looking ergonomic chairs arranged around it. Subtle dust motes catching the cool daylight filtering through large, slightly opaque windows (suggesting an overcast day). The lighting should be harsh yet diffused, creating deep shadows that accentuate the tension. There is a barely visible HVAC vent or air conditioning unit subtly humming in the background, contributing to the atmosphere of sterile stagnation. No people present. Cinematic, high contrast, palpable sense of unresolved conflict.",
+    "negative_prompt": "people, characters, messy, cluttered, warm colors, bright sunshine, action, dynamic pose"
+  },
+  "character_sprites": [
+    {
+      "character_id": "铃木悟",
+      "character_name": "铃木悟",
+      "prompt": "Full body character portrait of Suzuki Satoru. Style: Japanese anime/light novel illustration, highly detailed, high quality, consistent design. He is standing near the conference table, adopting a posture that conveys deep contemplation mixed with simmering resentment. His expression is controlled but tense, eyes narrowed slightly as if weighing his next words. Outfit should be professional business attire (e.g., a well-tailored suit jacket over a crisp shirt). Lighting must match the cool, diffused daylight of the conference room background—subtle shadows defining his features and clothing folds. Posed in a 3/4 view, facing slightly towards the viewer but looking past them, conveying internal struggle. White or pure colored background.",
+      "negative_prompt": "smiling, overly emotional, casual clothes, messy hair, bad anatomy, low resolution"
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "塔其·米",
+      "prompt": "Half body character portrait of Tachi Mei. Style: Japanese anime/light novel illustration, highly detailed, high quality, consistent design. She is seated or standing near the table edge, radiating an aura of composed intelligence masking underlying shock or defiance. Her expression should be one of cool assessment—observational and slightly guarded. Outfit should be formal but subtly stylish business wear that fits her character aesthetic (e.g., a sophisticated blazer). Lighting must match the cool, diffused daylight, highlighting the sharpness of her features. Posed in a 3/4 view, looking directly or slightly to the side with an intense gaze. White or pure colored background.",
+      "negative_prompt": "scared, aggressive pose, overly cheerful, casual wear, low contrast, bad proportions"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full body character portrait of Ulbert. Style: Japanese anime/light novel illustration, highly detailed, high quality, consistent design. He stands in a dominant but restrained posture within the conference setting's implied space. His expression should be one of cold authority and suppressed anger—a look that suggests he has seen too much to react strongly. Outfit must be impeccably tailored and authoritative (e.g., dark, expensive suit). Lighting should cast professional, hard shadows consistent with a formal day setting, emphasizing his imposing presence. Posed in a 3/4 view, looking directly at the viewer with unwavering intensity. White or pure colored background.",
+      "negative_prompt": "sloppy clothes, overly cartoonish, relaxed posture, smiling, low detail, messy elements"
+    },
+    {
+      "character_id": "贰式炎雷",
+      "character_name": "贰式炎雷",
+      "prompt": "Half body character portrait of Niishiki Enrai. Style: Japanese anime/light novel illustration, highly detailed, high quality, consistent design. He should appear restless and agitated, embodying the barely contained 'unspoken rage' mentioned in the atmosphere. His expression is a mixture of profound disappointment and simmering frustration; his gaze might be slightly unfocused or burning with restrained emotion. Outfit must fit the scene (formal attire, but perhaps with an element suggesting underlying power/tension). Lighting should catch the subtle tension in his shoulders and jawline. Posed in a 3/4 view, body language conveying coiled energy. White or pure colored background.",
+      "negative_prompt": "calm smile, bored expression, overly aggressive action, messy clothes, childish look, soft lighting"
+    }
+  ]
+}

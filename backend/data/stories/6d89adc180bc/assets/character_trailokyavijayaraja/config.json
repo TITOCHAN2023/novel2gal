@@ -1,0 +1,18 @@
+{
+  "id": "character_id_placeholder",
+  "name": "降三世明王 (Trailokyavijayarāja)",
+  "aliases": [],
+  "age": "",
+  "identity": "神祇/战斗角色",
+  "traits": [
+    "强大",
+    "攻击性强",
+    "联合作战"
+  ],
+  "speech_style": "（待补充）",
+  "abilities": [
+    "五大明王连击 (参与)",
+    "使用枪械进行穿刺攻击"
+  ],
+  "appearance_summary": "A divine warrior, wielding a spear/lance."
+}

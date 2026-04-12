@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useGameStore } from '../../store/gameStore';
-import { useBackendStore, useBackend } from '../../hooks/useBackend';
+import { useBackendStore, useBackend, sendToBackend } from '../../hooks/useBackend';
 import './ProgressIndicator.css';
 
 interface GenerationStatus {
@@ -35,7 +35,10 @@ export default function ProgressIndicator() {
     }
   }, []));
 
-  // 计算 Gap 距离：当前场景到最深叶子的距离
+  const gapSetting = useGameStore((s) => s.settings.gap);
+  const pregeneratingRef = useRef(false);
+
+  // 计算 Gap 距离：当前场景子树内的最大深度
   useEffect(() => {
     if (!script || !currentSceneId) return;
     const scenes = script.scenes;
@@ -43,23 +46,55 @@ export default function ProgressIndicator() {
     if (!current) return;
 
     const currentDepth = current.depth ?? 0;
-    let maxDepth = currentDepth;
 
-    // 遍历所有场景找最大深度
-    for (const s of Object.values(scenes)) {
-      const d = (s as { depth?: number }).depth ?? 0;
-      if (d > maxDepth) maxDepth = d;
+    // 只在玩家可达子树内找最深叶子（BFS/DFS from currentSceneId）
+    let maxDepth = currentDepth;
+    let deepestLeaf = currentSceneId;
+    const visited = new Set<string>();
+    const queue = [currentSceneId];
+    while (queue.length > 0) {
+      const sid = queue.shift()!;
+      if (visited.has(sid)) continue;
+      visited.add(sid);
+      const scene = scenes[sid];
+      if (!scene) continue;
+      const d = (scene as { depth?: number }).depth ?? 0;
+      if (d > maxDepth) {
+        maxDepth = d;
+        deepestLeaf = sid;
+      }
+      // 找子场景：通过 choices 或 nextScene
+      if (scene.choices) {
+        for (const c of scene.choices) {
+          if (c.targetScene && scenes[c.targetScene]) queue.push(c.targetScene);
+        }
+      }
+      if (scene.nextScene && scenes[scene.nextScene]) queue.push(scene.nextScene);
     }
 
-    const gap = maxDepth - currentDepth;
+    const remainingGap = maxDepth - currentDepth;
 
-    // 只在 gap 小于 3 时显示警告
-    if (gap <= 2 && gap >= 0) {
-      setStatus((prev) => prev ? { ...prev, gapRemaining: gap } : {
-        phase: 0, phaseName: '', detail: '', percent: 0, gapRemaining: gap,
+    // 只在 gap 小于设定值时显示警告
+    if (remainingGap <= Math.min(gapSetting, 3) && remainingGap >= 0) {
+      setStatus((prev) => prev ? { ...prev, gapRemaining: remainingGap } : {
+        phase: 0, phaseName: '', detail: '', percent: 0, gapRemaining: remainingGap,
       });
     }
-  }, [script, currentSceneId]);
+
+    // 主动触发 Gap 预生成（当剩余 gap 不足设定值的一半时）
+    if (remainingGap < Math.ceil(gapSetting / 2) && !pregeneratingRef.current) {
+
+      pregeneratingRef.current = true;
+      sendToBackend({
+        cmd: 'gap_pregenerate',
+        from_scene: deepestLeaf,
+        gap_depth: gapSetting,
+      });
+
+      // 30秒后重置标记，允许再次触发
+      setTimeout(() => { pregeneratingRef.current = false; }, 30000);
+    }
+  }, [script, currentSceneId, gapSetting]);
 
   // 不显示的情况：没有状态且不在等待
   if (!status && !waitingForContent) return null;

@@ -104,6 +104,51 @@ export default function SettingsScreen() {
           </label>
         </div>
 
+        <div className="settings-group">
+          <label className="settings-label">
+            预生成缓冲 (Gap)
+            <div className="settings-slider-row">
+              <span className="settings-hint">少</span>
+              <input
+                type="range"
+                min={1}
+                max={8}
+                step={1}
+                value={settings.gap}
+                onChange={(e) =>
+                  updateSettings({ gap: Number(e.target.value) })
+                }
+              />
+              <span className="settings-hint">多</span>
+              <span className="settings-value">{settings.gap} 层</span>
+            </div>
+            <span className="settings-sublabel">游玩时保持前方几层预生成场景</span>
+          </label>
+        </div>
+
+        <div className="settings-group">
+          <label className="settings-label">
+            全屏模式
+            <div className="settings-slider-row">
+              <button
+                className="settings-back-btn"
+                style={{ fontSize: 12, padding: '6px 16px' }}
+                onClick={() => {
+                  if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                    updateSettings({ fullscreen: false });
+                  } else {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                    updateSettings({ fullscreen: true });
+                  }
+                }}
+              >
+                {settings.fullscreen ? '退出全屏' : '进入全屏'}
+              </button>
+            </div>
+          </label>
+        </div>
+
         <div className="settings-actions">
           <button className="settings-back-btn" onClick={() => setScreen('game')}>
             返回游戏

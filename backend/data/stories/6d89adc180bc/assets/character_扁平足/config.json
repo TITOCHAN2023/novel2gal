@@ -1,0 +1,17 @@
+{
+  "id": "character_id_placeholder",
+  "name": "扁平足",
+  "aliases": [],
+  "age": "",
+  "identity": "参与探查的成员之一",
+  "traits": [
+    "观察力强",
+    "合作性高",
+    "专业"
+  ],
+  "speech_style": "（无对话样本，暂空）",
+  "abilities": [
+    "物理监视/侦查"
+  ],
+  "appearance_summary": ""
+}

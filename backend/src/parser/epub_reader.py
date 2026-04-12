@@ -52,7 +52,7 @@ def read_epub(path: str | Path) -> list[Chapter]:
     idx = 0
 
     for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-        content = item.get_content().decode("utf-8", errors="ignore")
+        content = item.get_content().decode("utf-8", errors="replace")
         soup = BeautifulSoup(content, "html.parser")
         text = soup.get_text(separator="\n", strip=False)
         # 清理连续空行
@@ -76,7 +76,9 @@ def read_epub(path: str | Path) -> list[Chapter]:
 
         # 尝试提取标题
         title_tag = soup.find(["h1", "h2", "h3", "title"])
-        title = title_tag.get_text(strip=True) if title_tag else f"章节 {idx + 1}"
+        title = title_tag.get_text(strip=True) if title_tag else ""
+        if not title:
+            title = f"章节 {idx + 1}"
         # 如果标题太长或者就是正文开头，用文件名
         if len(title) > 50:
             name = item.get_name()

@@ -1,0 +1,20 @@
+{
+  "scene_background": {
+    "prompt": "Wide shot, 16:9 aspect ratio. A modern, professional conference room. The room should feel slightly sterile and overly controlled, suggesting intellectual tension. Include elements like a large polished mahogany table reflecting subtle ambient light, high-backed ergonomic chairs arranged around it, and floor-to-ceiling windows showing a muted, overcast daytime cityscape view (suggesting a sense of lingering emotional weight rather than bright sunshine). The lighting should be cool, diffused daylight mixed with overhead recessed lighting, creating soft but noticeable shadows that emphasize the architecture and the polished surfaces. Focus on rich textures: wood grain, glass, subtle dust motes catching the light. No characters present. Japanese anime/light novel illustration style, detailed, high quality.",
+    "negative_prompt": "Characters, people, clutter, messy, warm tones, overly dramatic lighting, bright sunshine"
+  },
+  "character_sprites": [
+    {
+      "character_id": "traveler",
+      "character_name": "旅人 (Traveler)",
+      "prompt": "Full body character portrait of the Traveler. Standing in a contemplative pose, perhaps with one hand slightly raised or resting near their side, conveying an air of quiet observation and readiness. The expression should be neutral but thoughtful, eyes looking directly at the viewer (or slightly past the camera). Outfit details must be consistent with established lore: layered, practical, and somewhat nomadic. Lighting should match the cool, diffused daylight of the conference room background. White/pure color background for sprite generation. Japanese anime/light novel illustration style, detailed, high quality.",
+      "negative_prompt": "Smiling widely, overly aggressive pose, distracting background elements, bad anatomy"
+    },
+    {
+      "character_id": "sugoi",
+      "character_name": "铃木悟 (Sugo Sato)",
+      "prompt": "Half-body character portrait of Sugo Sato. He is depicted in a posture suggesting intellectual assessment—perhaps leaning slightly forward with hands clasped loosely or resting on the table edge, adopting an air of methodical analysis. He must be adjusting his glasses slightly, making it a central focus point for his action/expression. His expression should be composed, analytical, and slightly detached. Outfit details: professional business attire (suit jacket, crisp shirt). Lighting should mimic the cool, diffused daylight environment, casting subtle shadows under his jawline and brow. White/pure color background for sprite generation. Japanese anime/light novel illustration style, detailed, high quality.",
+      "negative_prompt": "Overly emotional expression, messy hair, casual clothing, action pose, poorly drawn hands"
+    }
+  ]
+}

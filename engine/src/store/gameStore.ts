@@ -1,4 +1,21 @@
 import { create } from 'zustand';
+
+/** 情绪标签 → BGM 文件映射（与后端 bgm_manager.py 对应） */
+const BGM_MOOD_MAP: Record<string, string> = {
+  tense: '/assets/bgm/tense_01.mp3',
+  calm: '/assets/bgm/calm_01.mp3',
+  happy: '/assets/bgm/happy_01.mp3',
+  sad: '/assets/bgm/sad_01.mp3',
+  romantic: '/assets/bgm/romantic_01.mp3',
+  mystery: '/assets/bgm/mystery_01.mp3',
+  epic: '/assets/bgm/epic_01.mp3',
+  peaceful: '/assets/bgm/peaceful_01.mp3',
+};
+
+function resolveBgmMood(mood?: string): string {
+  return mood ? BGM_MOOD_MAP[mood] || '' : '';
+}
+
 import type {
   GameState,
   GameScript,
@@ -266,7 +283,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       currentDepth: depth,
       showingChoices: false,
       background: scene.background ?? s.background,
-      bgm: scene.bgm ?? s.bgm,
+      bgm: scene.bgm || resolveBgmMood((scene as { bgm_mood?: string }).bgm_mood) || s.bgm,
       characters: scene.characters ?? s.characters,
       transition: effectiveTransition,
       isTransitioning: effectiveTransition !== 'none',
@@ -296,6 +313,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       set((s) => ({ backlog: [...s.backlog, entry] }));
     }
+
+    // 自动存档（slot 0 = auto-save，不阻塞）
+    try {
+      import('../engine/SaveManager').then(({ saveGame }) => {
+        const snap = get().getSnapshot();
+        saveGame({
+          id: 0,
+          timestamp: Date.now(),
+          sceneId: snap.sceneId,
+          lineIndex: snap.lineIndex,
+          playPath: snap.playPath,
+          preview: snap.preview,
+          playTimeMs: snap.playTime,
+        }).catch(() => {});
+      });
+    } catch { /* ignore */ }
   },
 
   setTransitioning: (v) => set({ isTransitioning: v }),
@@ -331,12 +364,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const isSpeaking = nextLine.type === 'dialogue' && c.name === nextLine.character;
         // 如果是说话角色且有 emotion 信息，构造对应的 sprite 路径
         let sprite = c.sprite;
-        if (isSpeaking && emotion && c.id) {
-          // 资产池路径：character_{id}/outfit_{outfit}/emotion/{emotion}_{intensity}.png
-          // 如果精确路径不存在，fallback 到基础立绘
-          const outfitDir = outfit && outfit !== 'default' ? `outfit_${outfit}` : 'outfit_default';
-          sprite = `/assets/${c.id}/${outfitDir}/emotion/${emotion}_${intensity}.png`;
-          // 注意：这个路径可能不存在（资产池按需生成），前端 img onerror 会 fallback
+        if (isSpeaking && emotion && c.sprite) {
+          // 从已有 sprite 路径推导基础目录
+          // 例如 /assets/overlord_v0/character_xxx/base/sprite.png → /assets/overlord_v0/character_xxx
+          const baseMatch = c.sprite.match(/^(\/assets\/[^/]+\/character_[^/]+)\//);
+          if (baseMatch) {
+            const charBase = baseMatch[1];
+            const outfitDir = outfit && outfit !== 'default' ? `outfit_${outfit}` : 'outfit_default';
+            sprite = `${charBase}/${outfitDir}/emotion/${emotion}_${intensity}.png`;
+            // 注意：这个路径可能不存在（资产池按需生成），前端 img onerror 会 fallback
+          }
         }
         return { ...c, isActive: isSpeaking, sprite: sprite || c.sprite };
       });

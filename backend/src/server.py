@@ -25,15 +25,16 @@ from typing import Set
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, UploadFile, File, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, UploadFile, File, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+import config
 from config.logging_config import setup_logging
-from stories.manager import StoryManager, StoryStats, StoryProgress
+from stories.manager import StoryManager, StoryStats, StoryProgress, StorySettings
 
 # 全局
 DATA_DIR = Path(__file__).parent.parent / "data"
@@ -87,6 +88,7 @@ async def lifespan(app: FastAPI):
                 logger.info(f"  恢复流水线: {sid}")
 
     yield
+    await story_manager.close_all_stores()
     logger.info("Novel2Gal 后端关闭")
 
 
@@ -96,13 +98,26 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 logger = logging.getLogger("server")
 
 
+def _safe_task(coro, name: str = ""):
+    """创建 asyncio task 并记录未捕获的异常（避免静默丢失）"""
+    task = asyncio.create_task(coro)
+    def _on_done(t: asyncio.Task):
+        if t.cancelled():
+            return
+        exc = t.exception()
+        if exc:
+            logger.error(f"后台任务异常 [{name}]: {exc}", exc_info=exc)
+    task.add_done_callback(_on_done)
+    return task
+
+
 # ============================================================
 # REST API — 故事管理
 # ============================================================
 
 @app.post("/api/stories/upload")
 async def upload_story(file: UploadFile = File(...)):
-    """上传 epub/txt 文件，创建故事并启动流水线"""
+    """上传 epub/txt 文件，创建故事（不自动启动流水线，等待配置）"""
     if not file.filename:
         raise HTTPException(400, "缺少文件名")
 
@@ -116,18 +131,57 @@ async def upload_story(file: UploadFile = File(...)):
         tmp.write(content)
         tmp_path = Path(tmp.name)
 
-    # 创建故事
+    # 创建故事（状态为 uploading，等待用户配置后启动）
     entry = story_manager.create_story(file.filename, tmp_path)
     tmp_path.unlink(missing_ok=True)
-
-    # 启动流水线（不绑定 WebSocket）
-    story_manager.start_pipeline(entry.id, run_story_pipeline(entry.id))
 
     return JSONResponse({
         "success": True,
         "story_id": entry.id,
         "title": entry.title,
         "status": entry.status,
+    })
+
+
+@app.post("/api/stories/{story_id}/configure")
+async def configure_and_start(story_id: str, request: Request):
+    """配置故事设置并启动流水线"""
+    entry = story_manager.get_story(story_id)
+    if not entry:
+        raise HTTPException(404, "故事不存在")
+    if entry.status == "ready":
+        raise HTTPException(409, "故事已就绪，无需重新配置")
+    if entry.status not in ("uploading", "error"):
+        if story_manager.is_pipeline_running(story_id):
+            raise HTTPException(409, "流水线已在运行")
+
+    # 解析设置
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    def safe_int(val, default: int) -> int:
+        try:
+            return int(val)
+        except (ValueError, TypeError):
+            return default
+
+    settings = StorySettings(
+        player_role=str(body.get("player_role", "")),
+        initial_depth=max(1, min(10, safe_int(body.get("initial_depth"), 2))),
+        gap=max(1, min(10, safe_int(body.get("gap"), 3))),
+        max_branches=max(1, min(4, safe_int(body.get("max_branches"), 2))),
+    )
+    story_manager.update_story(story_id, settings=settings)
+
+    # 启动流水线
+    story_manager.start_pipeline(story_id, run_story_pipeline(story_id))
+
+    return JSONResponse({
+        "success": True,
+        "story_id": story_id,
+        "settings": settings.to_dict(),
     })
 
 
@@ -146,6 +200,57 @@ async def get_story(story_id: str):
     return JSONResponse(entry.to_dict())
 
 
+@app.post("/api/stories/{story_id}/refresh-assets")
+async def refresh_story_assets(story_id: str):
+    """刷新故事的资产 URL（为存量数据注入角色立绘和背景图路径）"""
+    entry = story_manager.get_story(story_id)
+    if not entry:
+        raise HTTPException(404, "故事不存在")
+
+    scenes_path = story_manager.story_scenes(story_id)
+    if not scenes_path.exists():
+        raise HTTPException(404, "场景文件不存在")
+
+    from db.store import NovelStore
+    from orchestrator.tree_generator import inject_asset_urls_standalone
+
+    store = None
+    try:
+        store = await NovelStore.create(
+            db_path=story_manager.story_db(story_id),
+            namespace="novel2gal", database=story_id,
+            asset_root=story_manager.story_assets(story_id),
+        )
+
+        # 加载场景
+        scenes = json.loads(scenes_path.read_text(encoding="utf-8"))
+
+        # 注入资产 URL（独立函数，不需要构造 TreeGenerator）
+        await inject_asset_urls_standalone(store, scenes, story_id, scenes_path)
+
+        # 统计注入结果
+        bg_count = sum(1 for s in scenes.values() if s.get("background"))
+        sprite_count = sum(
+            1 for s in scenes.values()
+            for c in (s.get("characters") or [])
+            if c.get("sprite")
+        )
+
+        logger.info(f"[{story_id}] 资产 URL 刷新: {bg_count} 个背景, {sprite_count} 个立绘")
+        return JSONResponse({
+            "success": True,
+            "backgrounds_injected": bg_count,
+            "sprites_injected": sprite_count,
+            "total_scenes": len(scenes),
+        })
+    except Exception as e:
+        logger.error(f"[{story_id}] 资产刷新失败: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+    finally:
+        if store:
+            await store.close()
+
+
 @app.delete("/api/stories/{story_id}")
 async def delete_story(story_id: str):
     """删除故事"""
@@ -154,6 +259,19 @@ async def delete_story(story_id: str):
     if not story_manager.delete_story(story_id):
         raise HTTPException(404, "故事不存在")
     return JSONResponse({"success": True})
+
+
+@app.get("/api/tts/voices")
+async def list_tts_voices():
+    """列出当前 TTS Provider 可用的语音"""
+    from assets.tts_provider import create_tts_provider
+    provider = create_tts_provider()
+    if not provider:
+        return JSONResponse({"provider": None, "voices": []})
+    return JSONResponse({
+        "provider": provider.name,
+        "voices": provider.list_voices(),
+    })
 
 
 # ============================================================
@@ -274,6 +392,19 @@ async def get_story_logs(story_id: str, lines: int = 50):
     return JSONResponse({"lines": all_lines[-lines:]})
 
 
+@app.get("/assets/bgm/{filename:path}")
+async def serve_bgm(filename: str):
+    """提供默认 BGM 文件"""
+    bgm_dir = (DATA_DIR / "bgm").resolve()
+    bgm_path = (bgm_dir / filename).resolve()
+    if not str(bgm_path).startswith(str(bgm_dir)):
+        raise HTTPException(403, "路径非法")
+    if not bgm_path.exists():
+        raise HTTPException(404)
+    from fastapi.responses import FileResponse
+    return FileResponse(bgm_path)
+
+
 @app.get("/assets/{story_id}/{path:path}")
 async def serve_asset(story_id: str, path: str):
     base_dir = story_manager.story_assets(story_id).resolve()
@@ -320,8 +451,8 @@ async def debug_websocket(ws: WebSocket):
                         "story_id": story_id,
                         "status": entry.status,
                     })
-                    # 如果已就绪，推送场景
-                    if entry.status == "ready":
+                    # 如果已就绪或可玩，推送场景
+                    if entry.status in ("ready", "playable"):
                         scenes_path = story_manager.story_scenes(story_id)
                         if scenes_path.exists() and scenes_path.stat().st_size > 10:
                             scenes = json.loads(scenes_path.read_text(encoding="utf-8"))
@@ -357,7 +488,14 @@ async def debug_websocket(ws: WebSocket):
 
             elif cmd == "player_choice":
                 if bound_story:
-                    asyncio.create_task(handle_player_choice(ws, bound_story, data))
+                    _safe_task(handle_player_choice(ws, bound_story, data), "player_choice")
+
+            elif cmd == "gap_pregenerate":
+                if bound_story:
+                    from_scene = data.get("from_scene", "")
+                    gap_depth = data.get("gap_depth", 2)
+                    if from_scene:
+                        _safe_task(_handle_gap_pregenerate(ws, bound_story, from_scene, gap_depth), "gap_pregenerate")
 
             elif cmd == "get_status":
                 await ws.send_json({
@@ -390,8 +528,8 @@ async def run_story_pipeline(story_id: str):
     from orchestrator.three_zone import build_three_zone_context
 
     pl = logging.getLogger("pipeline")
-    llm_url = os.environ.get("LLM_BASE_URL", "http://localhost:1234")
-    llm_model = os.environ.get("LLM_MODEL", "")
+    llm_url = config.LLM_BASE_URL
+    llm_model = config.LLM_MODEL
 
     try:
         # ---- Phase 1: 阅读 ----
@@ -405,7 +543,7 @@ async def run_story_pipeline(story_id: str):
         chapters = read_epub(str(upload_path))
         all_chunks = []
         for ch in chapters:
-            ch_chunks = chunk_novel(ch.text, max_chars=3000, overlap_chars=200)
+            ch_chunks = chunk_novel(ch.text, max_chars=config.CHUNK_MAX_CHARS, overlap_chars=config.CHUNK_OVERLAP_CHARS)
             for c in ch_chunks:
                 c.chapter = ch.index + 1
                 c.chapter_title = f"{ch.title} (块{c.index})" if len(ch_chunks) > 1 else ch.title
@@ -422,32 +560,44 @@ async def run_story_pipeline(story_id: str):
         cache_path = story_manager.story_parse_cache(story_id)
         state = ParseState()
         synthesis = None
+        cached_chunk_count = 0
 
         if cache_path.exists():
             cache = json.loads(cache_path.read_text(encoding="utf-8"))
-            # 有 synthesis 就用缓存（即使块数不完整——部分解析+synthesis 也能用）
-            if cache.get("synthesis"):
-                pl.info(f"[{story_id}] 使用解析缓存 ({cache.get('chunk_count',0)}/{len(all_chunks)} 块)")
+            cached_chunk_count = cache.get("chunk_count", 0)
+
+            # 恢复已有状态（无论是否有 synthesis）
+            if cache.get("character_card_versions"):
                 state.character_card_versions = cache["character_card_versions"]
-                for cr_data in cache["chunk_results"]:
-                    state.chunk_results.append(ChunkResult(
-                        chunk_index=cr_data["chunk_index"],
-                        characters=cr_data.get("characters", []),
-                        locations=cr_data.get("locations", []),
-                        events=cr_data.get("events", []),
-                        chapter_summary=cr_data.get("chapter_summary", ""),
-                        dialogues=cr_data.get("dialogues", {}),
-                    ))
+            if cache.get("known_character_ids"):
+                state.known_character_ids = cache["known_character_ids"]
+            for cr_data in cache.get("chunk_results", []):
+                state.chunk_results.append(ChunkResult(
+                    chunk_index=cr_data["chunk_index"],
+                    characters=cr_data.get("characters", []),
+                    locations=cr_data.get("locations", []),
+                    events=cr_data.get("events", []),
+                    chapter_summary=cr_data.get("chapter_summary", ""),
+                    dialogues=cr_data.get("dialogues", {}),
+                ))
+
+            if cache.get("synthesis"):
                 synthesis = cache["synthesis"]
+                pl.info(f"[{story_id}] 完整缓存命中 ({cached_chunk_count}/{len(all_chunks)} 块 + synthesis)")
+            elif cached_chunk_count > 0:
+                pl.info(f"[{story_id}] 断点恢复: 已有 {cached_chunk_count}/{len(all_chunks)} 块，从第 {cached_chunk_count+1} 块继续")
 
         if synthesis is None:
             async with LLMClient(base_url=llm_url, model=llm_model, timeout=300) as llm:
                 parser = NovelParser(llm=llm)
+                # 从断点继续（跳过已缓存的 chunks）
                 for i, chunk in enumerate(all_chunks):
+                    if i < cached_chunk_count:
+                        continue  # 跳过已解析的
                     pct = int((i / len(all_chunks)) * 100)
                     story_manager.update_progress(story_id, 2, "正在理解故事...", f"第 {i+1}/{len(all_chunks)} 段", pct)
                     await parser.process_chunk(chunk, state)
-                    # 断点缓存
+                    # 断点缓存（含 known_character_ids）
                     _save_parse_cache(cache_path, state, i + 1, None)
 
                 story_manager.update_progress(story_id, 2, "正在理解故事...", "综合分析中", 95)
@@ -484,17 +634,17 @@ async def run_story_pipeline(story_id: str):
 
         # 并行启动生图（不阻塞 Phase 4）
         image_task = None
-        if os.environ.get("ANYGEN_API_KEY"):
+        if config.ANYGEN_API_KEY:
             story_manager.update_progress(story_id, 3, "正在创建世界...", "生成角色立绘和场景背景（并行）", 60)
             from assets.image_generator import generate_all_assets as gen_images
             chars = await store.get_all_characters()
             locs = await store.get_all_locations()
-            image_task = asyncio.create_task(gen_images(
+            image_task = _safe_task(gen_images(
                 asset_root=story_manager.story_assets(story_id),
                 characters=chars, locations=locs,
                 novel_title=novel_title, epub_images_dir=epub_images_dir,
-                max_concurrent=4,
-            ))
+                max_concurrent=config.IMAGE_MAX_CONCURRENT,
+            ), "image_generation")
             pl.info(f"[{story_id}] 生图任务已启动（并行，不阻塞场景生成）")
         else:
             pl.info(f"[{story_id}] 无 ANYGEN_API_KEY，跳过生图")
@@ -519,7 +669,25 @@ async def run_story_pipeline(story_id: str):
 
         if not engine_scenes:
             # ws_broadcast: 生成新场景时实时推送给订阅该故事的前端
+            _playable_notified = False
+
             async def ws_broadcast(new_scenes: dict):
+                nonlocal _playable_notified
+
+                # 流式对话推送（__stream__ 标记）
+                if new_scenes.get("__stream__"):
+                    stream_msg = {
+                        "type": "scene_lines_append",
+                        "scene_id": new_scenes["scene_id"],
+                        "lines": new_scenes["lines"],
+                    }
+                    for ws in list(story_manager._subscribers.get(story_id, [])):
+                        try:
+                            await ws.send_json(stream_msg)
+                        except Exception:
+                            pass
+                    return
+
                 msg = {"type": "scenes_ready", "scenes": new_scenes, "firstScene": None}
                 for ws in list(story_manager._subscribers.get(story_id, [])):
                     try:
@@ -527,18 +695,57 @@ async def run_story_pipeline(story_id: str):
                     except Exception:
                         pass
 
+                # 分阶段解锁：scene_root 生成后立即标记为 playable
+                if "scene_root" in new_scenes and not _playable_notified:
+                    _playable_notified = True
+                    story_manager.update_story(story_id, status="playable")
+                    pl.info(f"[{story_id}] 第一个场景已生成，标记为 playable（后台继续生成）")
+                    # 通知前端可以开始玩了
+                    playable_msg = {
+                        "type": "story_playable",
+                        "story_id": story_id,
+                        "scenes": new_scenes,
+                        "firstScene": "scene_root",
+                    }
+                    for ws in list(story_manager._subscribers.get(story_id, [])):
+                        try:
+                            await ws.send_json(playable_msg)
+                        except Exception:
+                            pass
+
+            # 读取故事设置
+            entry_for_settings = story_manager.get_story(story_id)
+            settings = entry_for_settings.settings if entry_for_settings else StorySettings()
+
             async with LLMClient(base_url=llm_url, model=llm_model, timeout=600) as llm:
-                await setup_player_character(store, llm, "")
+                await setup_player_character(store, llm, settings.player_role)
                 story_manager.update_progress(story_id, 4, "正在编写第一章...", "生成剧情树", 20)
 
                 generator = TreeGenerator(
                     llm=llm, store=store, three_zone=three_zone,
-                    initial_depth=2, max_branches_per_node=2,
+                    initial_depth=settings.initial_depth,
+                    max_branches_per_node=settings.max_branches,
                     scenes_path=scenes_path,
                     ws_broadcast=ws_broadcast,
                     story_id=story_id,
                 )
                 engine_scenes = await generator.generate_tree()
+
+        # TTS 语音生成（并行，不阻塞）
+        tts_task = None
+        if config.TTS_ENABLED and engine_scenes:
+            try:
+                from assets.tts_generator import generate_all_scene_voices
+                chars = await store.get_all_characters()
+                tts_task = _safe_task(generate_all_scene_voices(
+                    scenes=engine_scenes,
+                    characters=chars,
+                    asset_root=story_manager.story_assets(story_id),
+                    max_concurrent=config.TTS_MAX_CONCURRENT,
+                ), "tts_generation")
+                pl.info(f"[{story_id}] TTS 任务已启动（并行）")
+            except Exception as e:
+                pl.warning(f"[{story_id}] TTS 启动失败: {e}")
 
         # 等待生图完成（如果还在跑）
         if image_task and not image_task.done():
@@ -549,6 +756,20 @@ async def run_story_pipeline(story_id: str):
                 pl.warning(f"[{story_id}] 生图超时，跳过（后续增量补充）")
             except Exception as e:
                 pl.warning(f"[{story_id}] 生图异常: {e}")
+
+        # 等待 TTS 完成 + 注入语音 URL
+        if tts_task:
+            try:
+                voice_results = await asyncio.wait_for(tts_task, timeout=300)
+                if voice_results:
+                    from assets.tts_generator import inject_voice_urls
+                    inject_voice_urls(engine_scenes, voice_results)
+                    # 保存更新后的场景（含语音 URL）
+                    scenes_path.write_text(json.dumps(engine_scenes, ensure_ascii=False, indent=2))
+            except asyncio.TimeoutError:
+                pl.warning(f"[{story_id}] TTS 超时，后续增量补充")
+            except Exception as e:
+                pl.warning(f"[{story_id}] TTS 异常: {e}")
 
         # 更新统计+标记就绪
         stats = StoryStats(
@@ -572,6 +793,10 @@ async def run_story_pipeline(story_id: str):
     except Exception as e:
         pl.error(f"[{story_id}] 流水线错误: {e}", exc_info=True)
         story_manager.mark_error(story_id, str(e))
+    finally:
+        # 确保关闭 DB 连接
+        if 'store' in dir() and store:
+            await store.close()
 
 
 async def handle_player_choice(ws: WebSocket, story_id: str, data: dict):
@@ -587,12 +812,7 @@ async def handle_player_choice(ws: WebSocket, story_id: str, data: dict):
 
     # 更新玩家角色卡记忆
     try:
-        from db.store import NovelStore
-        store = await NovelStore.create(
-            db_path=story_manager.story_db(story_id),
-            namespace="novel2gal", database=story_id,
-            asset_root=story_manager.story_assets(story_id),
-        )
+        store = await story_manager.get_store(story_id)
         memory_entry = f"做出了选择: {choice_text}"
         if annotation:
             memory_entry += f" (原因: {annotation})"
@@ -614,7 +834,7 @@ async def handle_player_choice(ws: WebSocket, story_id: str, data: dict):
         cl.info(f"  目标场景不存在: {target_scene}，触发 Gap 生成")
         await ws.send_json({"type": "generating", "scene_id": target_scene})
         # 后台生成缺失的场景
-        asyncio.create_task(_gap_generate_scene(ws, story_id, scenes, target_scene))
+        _safe_task(_gap_generate_scene(ws, story_id, scenes, target_scene), "gap_generate")
 
 
 async def _gap_generate_scene(ws: WebSocket, story_id: str, existing_scenes: dict, target_scene: str):
@@ -628,18 +848,13 @@ async def _gap_generate_scene(ws: WebSocket, story_id: str, existing_scenes: dic
         from orchestrator.three_zone import build_three_zone_context
         from agent.character_agent import CharacterAgent
 
-        llm_url = os.environ.get("LLM_BASE_URL", "http://localhost:1234")
-        llm_model = os.environ.get("LLM_MODEL", "")
+        llm_url = config.LLM_BASE_URL
+        llm_model = config.LLM_MODEL
         cache_path = story_manager.story_parse_cache(story_id)
         three_zone = build_three_zone_context(cache_path) if cache_path.exists() else None
 
-        store = await NovelStore.create(
-            db_path=story_manager.story_db(story_id),
-            namespace="novel2gal", database=story_id,
-            asset_root=story_manager.story_assets(story_id),
-        )
-
-        async with LLMClient(base_url=llm_url, model=llm_model, timeout=600) as llm:
+        store = await story_manager.get_store(story_id)
+        async with LLMClient(base_url=config.LLM_BASE_URL, model=config.LLM_MODEL, timeout=600) as llm:
             sa = SuperAgent(llm)
 
             # 加载角色 Agent
@@ -676,6 +891,71 @@ async def _gap_generate_scene(ws: WebSocket, story_id: str, existing_scenes: dic
 
     except Exception as e:
         gl.error(f"[{story_id}] Gap 生成失败: {e}", exc_info=True)
+        try:
+            await ws.send_json({"type": "pipeline_error", "error": str(e)})
+        except Exception:
+            pass
+
+
+async def _handle_gap_pregenerate(ws: WebSocket, story_id: str, from_scene: str, gap_depth: int):
+    """主动 Gap 预生成——在玩家接近生成前沿时提前生成"""
+    gl = logging.getLogger("gap")
+    gl.info(f"[{story_id}] Gap 预生成: from={from_scene}, depth={gap_depth}")
+
+    try:
+        from config.llm_client import LLMClient
+        from db.store import NovelStore
+        from orchestrator.tree_generator import TreeGenerator
+        from orchestrator.three_zone import build_three_zone_context
+
+        llm_url = config.LLM_BASE_URL
+        llm_model = config.LLM_MODEL
+        cache_path = story_manager.story_parse_cache(story_id)
+        three_zone = build_three_zone_context(cache_path) if cache_path.exists() else None
+        scenes_path = story_manager.story_scenes(story_id)
+
+        store = await story_manager.get_store(story_id)
+
+        # ws_broadcast: 推新场景给前端
+        async def ws_broadcast(new_scenes: dict):
+            # 流式推送处理
+            if new_scenes.get("__stream__"):
+                stream_msg = {
+                    "type": "scene_lines_append",
+                    "scene_id": new_scenes["scene_id"],
+                    "lines": new_scenes["lines"],
+                }
+                for sub_ws in list(story_manager._subscribers.get(story_id, [])):
+                    try:
+                        await sub_ws.send_json(stream_msg)
+                    except Exception:
+                        pass
+                return
+            msg = {"type": "scenes_ready", "scenes": new_scenes, "firstScene": None}
+            for sub_ws in list(story_manager._subscribers.get(story_id, [])):
+                try:
+                    await sub_ws.send_json(msg)
+                except Exception:
+                    pass
+
+        entry = story_manager.get_story(story_id)
+        settings = entry.settings if entry else StorySettings()
+
+        async with LLMClient(base_url=config.LLM_BASE_URL, model=config.LLM_MODEL, timeout=600) as llm:
+            generator = TreeGenerator(
+                llm=llm, store=store, three_zone=three_zone,
+                initial_depth=gap_depth,
+                max_branches_per_node=settings.max_branches,
+                scenes_path=scenes_path,
+                ws_broadcast=ws_broadcast,
+                story_id=story_id,
+            )
+            new_scenes = await generator.generate_from_node(from_scene, depth=gap_depth)
+
+        gl.info(f"[{story_id}] Gap 预生成完成: {len(new_scenes)} 个新场景")
+
+    except Exception as e:
+        gl.error(f"[{story_id}] Gap 预生成失败: {e}", exc_info=True)
         try:
             await ws.send_json({"type": "pipeline_error", "error": str(e)})
         except Exception:

@@ -10,7 +10,7 @@ export default function BacklogPanel() {
 
   useEffect(() => {
     if (showBacklog) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [showBacklog]);
+  }, [showBacklog, backlog.length]);
 
   if (!showBacklog) return null;
 
@@ -28,7 +28,7 @@ export default function BacklogPanel() {
             <div className="backlog-panel__empty">暂无对话记录</div>
           )}
           {backlog.map((entry, i) => (
-            <div key={i} className={`backlog-entry backlog-entry--${entry.type}`}>
+            <div key={`${entry.sceneId}-${i}`} className={`backlog-entry backlog-entry--${entry.type}`}>
               {entry.character && (
                 <span className="backlog-entry__name">{entry.character}</span>
               )}

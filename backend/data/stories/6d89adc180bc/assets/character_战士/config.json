@@ -1,0 +1,15 @@
+{
+  "id": "role_warrior",
+  "name": "战士",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "待定"
+  ],
+  "speech_style": "未记录",
+  "abilities": [
+    "远射武器使用"
+  ],
+  "appearance_summary": ""
+}

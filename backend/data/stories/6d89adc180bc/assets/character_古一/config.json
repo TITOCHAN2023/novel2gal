@@ -1,0 +1,15 @@
+{
+  "id": "character_id_placeholder",
+  "name": "古一",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "支持激进想法",
+    "玩世不恭",
+    "具有煽动性"
+  ],
+  "speech_style": "用一种戏谑、略带嘲讽的口吻，表达出对“游戏”本质和群体行为的深刻洞察与参与欲望。",
+  "abilities": [],
+  "appearance_summary": ""
+}

@@ -1,6 +1,0 @@
-角色立绘生成 prompt:
-角色: 塔其·米
-外貌: A silver armored paladin with insectoid limbs, wearing a flowing red cape, majestic and otherworldly appearance.
-需要: 全身六视图 + 脸部五视图
-
---- 待接入真实生图 API ---

@@ -1,0 +1,19 @@
+{
+  "id": "acala_aatha",
+  "name": "不动明王 (Acala Aaatha)",
+  "aliases": [],
+  "age": "",
+  "identity": "佛教明王/战斗单位",
+  "traits": [
+    "强大",
+    "攻击性强",
+    "联合作战",
+    "具有仪式感"
+  ],
+  "speech_style": "充满战斗号召力和宗教威严的宣告式语气。",
+  "abilities": [
+    "五大明王连击（组合攻击）",
+    "绳索状物体投射攻击（破坏力与敌方善恶值下降挂钩）"
+  ],
+  "appearance_summary": "A powerful, divine warrior figure associated with the Five Great Kings. Often depicted in dynamic combat poses."
+}

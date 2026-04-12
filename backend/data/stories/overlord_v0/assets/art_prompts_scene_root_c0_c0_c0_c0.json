@@ -1,0 +1,26 @@
+{
+  "scene_background": {
+    "prompt": "A vast, modern conference room setting, captured in a cinematic 16:9 aspect ratio. The atmosphere is overwhelmingly tense and pressurized; the air feels thick, almost visible with unspoken tension. Describe details like highly polished dark wood tables, expensive but somewhat oppressive furniture, and muted, cool color grading (blues/grays). Lighting should be dramatic and low-key, suggesting overhead fluorescent lights are struggling to penetrate the heavy silence, casting deep, defined shadows that emphasize the weight of expectation. Dust motes might be faintly visible in the shafts of dim light. The composition should feel expansive but claustrophobic due to the emotional weight.",
+    "negative_prompt": "people, characters, overly bright, cheerful, warm sunlight, cartoonish, messy, clutter"
+  },
+  "character_sprites": [
+    {
+      "character_id": "sato",
+      "character_name": "铃木悟",
+      "prompt": "Full-body character portrait of Sato. Japanese anime/light novel illustration style, highly detailed, high quality. He is standing in a tense posture within the described conference room setting (implied environment for lighting consistency). His expression must convey deep internal struggle, guarded intelligence, and exhaustion mixed with resolve. Maintain his established clothing details. Pose him in a thoughtful, slightly confronting 3/4 angle towards the viewer, hands potentially clasped or held loosely at his sides. Lighting should be dramatic, catching the sharp angles of his face and casting shadows that suggest high stakes.",
+      "negative_prompt": "smiling, casual, overly relaxed, poor anatomy, childish"
+    },
+    {
+      "character_id": "ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full-body character portrait of Ulbert. Japanese anime/light novel illustration style, highly detailed, high quality. He is standing in a tense posture within the described conference room setting (implied environment for lighting consistency). His expression should be cold, calculating, and unwavering, projecting immense confidence or veiled threat. Maintain his established clothing details. Pose him in a dominant 3/4 angle, looking directly at the viewer with intensity. The lighting should emphasize sharp contours and give him an imposing presence.",
+      "negative_prompt": "hesitant, soft expression, messy clothes, amateur drawing, bright colors"
+    },
+    {
+      "character_id": "tachi",
+      "character_name": "塔其·米",
+      "prompt": "Full-body character portrait of Tachi Mi. Japanese anime/light novel illustration style, highly detailed, high quality. She is standing in a tense posture within the described conference room setting (implied environment for lighting consistency). Her expression should be complex—perhaps one of weary defiance, deep concern, or quiet tension, depending on her role in the moment. Maintain her established clothing details. Pose her in a 3/4 angle, perhaps slightly guarded or ready to react. The dramatic, low-key lighting should highlight the subtle emotions in her eyes.",
+      "negative_prompt": "overly cheerful, blank stare, messy hair, disproportionate limbs, overly soft rendering"
+    }
+  ]
+}

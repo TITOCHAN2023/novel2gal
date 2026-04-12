@@ -1,0 +1,19 @@
+{
+  "id": "forest_priest",
+  "name": "森林牧师",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "积极主动",
+    "务实",
+    "有建设性",
+    "合作精神"
+  ],
+  "speech_style": "语气平稳，表达观点时倾向于提出具体、可执行的建议。",
+  "abilities": [
+    "魔法感应（环境排查）",
+    "初步规划能力"
+  ],
+  "appearance_summary": ""
+}

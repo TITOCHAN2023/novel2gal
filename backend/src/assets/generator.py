@@ -65,23 +65,4 @@ async def generate_base_assets(store: NovelStore, novel_title: str = "Overlord",
         )
 
     logger.info(f"目录结构创建完成: {len(characters)} 角色, {len(locations)} 地点")
-
-    # 注意：不在这里同步调生图——生图由 server.py 的 asyncio.create_task 非阻塞处理
-    # 这样 Phase 4（场景生成）可以和生图并行
-    anygen_key = os.environ.get("ANYGEN_API_KEY", "")
-    if False and anygen_key:  # 禁用——由 server.py 管理
-        try:
-            from .image_generator import generate_all_assets
-            logger.info("检测到 AnyGen API，开始生成图片...")
-            results = await generate_all_assets(
-                asset_root=store.asset_root,
-                characters=characters,
-                locations=locations,
-                novel_title=novel_title,
-                epub_images_dir=epub_images_dir,
-            )
-            logger.info(f"图片生成完成: {len(results)} 个")
-        except Exception as e:
-            logger.warning(f"AnyGen 生图失败（不阻塞流程）: {e}")
-    else:
-        logger.info("无 AnyGen API key，跳过图片生成（占位模式）")
+    # 生图由 server.py 的 _safe_task(gen_images(...)) 非阻塞处理，不在这里调用

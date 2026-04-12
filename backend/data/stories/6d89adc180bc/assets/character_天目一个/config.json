@@ -1,0 +1,18 @@
+{
+  "id": "天目一个",
+  "name": "天目一个",
+  "aliases": [],
+  "age": "",
+  "identity": "锻造系职业者",
+  "traits": [
+    "主动担当",
+    "关心他人",
+    "专业",
+    "初期成员"
+  ],
+  "speech_style": "语气平稳，带有引导性和解决问题的倾向。",
+  "abilities": [
+    "锻造技术"
+  ],
+  "appearance_summary": ""
+}

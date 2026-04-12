@@ -24,11 +24,13 @@ export function createTreeQuery(script: GameScript): TreeQuery {
     return children;
   }
 
-  /** 获取从根到指定节点的路径（通过 parentId 回溯） */
+  /** 获取从根到指定节点的路径（通过 parentId 回溯，含循环检测） */
   function getPathToRoot(sceneId: string): string[] {
     const path: string[] = [];
+    const visited = new Set<string>();
     let current: string | undefined | null = sceneId;
-    while (current && scenes[current]) {
+    while (current && scenes[current] && !visited.has(current)) {
+      visited.add(current);
       path.unshift(current);
       current = scenes[current].parentId;
     }
@@ -37,16 +39,22 @@ export function createTreeQuery(script: GameScript): TreeQuery {
 
   /** 获取场景的深度 */
   function getDepth(sceneId: string): number {
-    return scenes[sceneId]?.depth ?? getPathToRoot(sceneId).length - 1;
+    const d = scenes[sceneId]?.depth;
+    if (d !== undefined && d !== null) return d;
+    const path = getPathToRoot(sceneId);
+    return path.length > 0 ? path.length - 1 : 0;
   }
 
-  /** 获取以某节点为根的子树最大深度（相对于该节点） */
-  function getSubtreeDepth(sceneId: string): number {
+  /** 获取以某节点为根的子树最大深度（相对于该节点，含循环检测） */
+  function getSubtreeDepth(sceneId: string, visited?: Set<string>): number {
+    const seen = visited ?? new Set<string>();
+    if (seen.has(sceneId)) return 0; // 循环检测
+    seen.add(sceneId);
     const children = getChildren(sceneId);
     if (children.length === 0) return 0;
     let max = 0;
     for (const child of children) {
-      max = Math.max(max, 1 + getSubtreeDepth(child));
+      max = Math.max(max, 1 + getSubtreeDepth(child, seen));
     }
     return max;
   }

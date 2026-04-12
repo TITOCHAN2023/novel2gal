@@ -292,7 +292,9 @@ async def generate_all_assets(
     async def gen_char(char: dict):
         async with semaphore:
             config = char.get("config", {})
-            char_id = config.get("id", "")
+            raw_id = config.get("id", "")
+            # SurrealDB 返回的 id 可能带表前缀，去掉
+            char_id = str(raw_id).split(":")[-1] if ":" in str(raw_id) else str(raw_id)
             name = char.get("name", char_id)
             appearance = config.get("appearance_summary", f"character named {name}")
             out = asset_root / f"character_{char_id}" / "base" / "sprite.png"
@@ -305,7 +307,9 @@ async def generate_all_assets(
 
     async def gen_loc(loc: dict):
         async with semaphore:
-            loc_id = loc.get("id", "")
+            raw_id = loc.get("id", "")
+            # SurrealDB 返回的 id 可能带表前缀（如 "location:meeting_room"），需要去掉
+            loc_id = str(raw_id).split(":")[-1] if ":" in str(raw_id) else str(raw_id)
             name = loc.get("name", loc_id)
             desc = loc.get("description", "")
             out = asset_root / f"location_{loc_id}" / "base" / "background.png"

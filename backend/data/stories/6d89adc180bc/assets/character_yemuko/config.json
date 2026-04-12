@@ -1,0 +1,32 @@
+{
+  "id": "yemuko_id",
+  "name": "夜舞子 (Yemuko)",
+  "aliases": [],
+  "age": "",
+  "identity": "补师/治疗系法师",
+  "traits": [
+    "辅助型",
+    "谨慎分析家",
+    "支持性",
+    "略带戏谑",
+    "团队协调者"
+  ],
+  "speech_style": "语气温和，带有分析性和建议性，尤其在涉及战斗资源分配或强调队友贡献时会提出考虑。同时偶尔会展现出戏谑、捉弄的口吻。",
+  "abilities": [
+    "精神系魔法吟唱（擅长）",
+    "治愈与回复能力（防御补师定位）",
+    "MP辅助/让渡能力",
+    "高防御武装配置",
+    "群体增益效果施加",
+    "经验值消费技能的规划建议",
+    "对魔法职能限制和陷阱的分析能力",
+    "超位（Anti-Positive Type）能力（可用于破坏道具，如《欧西里斯的审判》）",
+    "基于状态观察的主动治疗反应",
+    "战术规避与转移行动（如向上空移动以躲避地面攻击）",
+    "主动施加防御魔法",
+    "大范围/强力单体爆发性治疗（如<大致死>）",
+    "关键时机破坏限制道具，为后续连击做准备",
+    "强调团队分工与个体贡献的重要性"
+  ],
+  "appearance_summary": "A supportive mage specializing in mental magic chanting. She has healing and recovery abilities, positioning her as a defensive support caster, equipped with high-defense gear for maximum survivability."
+}

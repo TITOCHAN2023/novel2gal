@@ -21,7 +21,7 @@ from typing import Literal
 
 logger = logging.getLogger(__name__)
 
-StoryStatus = Literal["uploading", "parsing", "generating", "ready", "error", "queued"]
+StoryStatus = Literal["uploading", "parsing", "generating", "playable", "ready", "error", "queued"]
 
 
 @dataclass
@@ -41,6 +41,32 @@ class StoryStats:
 
 
 @dataclass
+class StorySettings:
+    """玩家在创建故事时的配置"""
+    player_role: str = ""          # 玩家角色名/ID（空=默认旅人）
+    initial_depth: int = 2         # 初始树深度
+    gap: int = 3                   # Gap 预生成距离
+    max_branches: int = 2          # 每个节点最大分支数
+
+    def to_dict(self) -> dict:
+        return {
+            "player_role": self.player_role,
+            "initial_depth": self.initial_depth,
+            "gap": self.gap,
+            "max_branches": self.max_branches,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "StorySettings":
+        return cls(
+            player_role=d.get("player_role", ""),
+            initial_depth=d.get("initial_depth", 2),
+            gap=d.get("gap", 3),
+            max_branches=d.get("max_branches", 2),
+        )
+
+
+@dataclass
 class StoryEntry:
     id: str = ""
     title: str = ""
@@ -52,6 +78,7 @@ class StoryEntry:
     progress: StoryProgress = field(default_factory=StoryProgress)
     error: str | None = None
     stats: StoryStats = field(default_factory=StoryStats)
+    settings: StorySettings = field(default_factory=StorySettings)
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -61,6 +88,7 @@ class StoryEntry:
     def from_dict(cls, d: dict) -> "StoryEntry":
         prog = d.get("progress", {})
         stats = d.get("stats", {})
+        settings = d.get("settings", {})
         return cls(
             id=d.get("id", ""),
             title=d.get("title", ""),
@@ -72,6 +100,7 @@ class StoryEntry:
             progress=StoryProgress(**prog) if isinstance(prog, dict) else StoryProgress(),
             error=d.get("error"),
             stats=StoryStats(**stats) if isinstance(stats, dict) else StoryStats(),
+            settings=StorySettings.from_dict(settings) if isinstance(settings, dict) else StorySettings(),
         )
 
 
@@ -83,6 +112,8 @@ class StoryManager:
         self.registry_path = data_dir / "stories.json"
         self.uploads_dir = data_dir / "uploads"
         self.stories_dir = data_dir / "stories"
+        # DB 连接缓存（避免反复创建/关闭）
+        self._store_cache: dict[str, "NovelStore"] = {}  # {story_id: NovelStore}
         self.uploads_dir.mkdir(parents=True, exist_ok=True)
         self.stories_dir.mkdir(parents=True, exist_ok=True)
 
@@ -144,6 +175,35 @@ class StoryManager:
         self._save_registry(reg)
         logger.info(f"已删除故事: {story_id}")
         return True
+
+    # ---- DB 连接管理 ----
+
+    async def get_store(self, story_id: str) -> "NovelStore":
+        """获取故事的 DB 连接（缓存复用，避免反复创建）"""
+        if story_id in self._store_cache:
+            return self._store_cache[story_id]
+
+        from db.store import NovelStore
+        store = await NovelStore.create(
+            db_path=self.story_db(story_id),
+            namespace="novel2gal",
+            database=story_id,
+            asset_root=self.story_assets(story_id),
+        )
+        self._store_cache[story_id] = store
+        return store
+
+    async def close_store(self, story_id: str) -> None:
+        """关闭并移除缓存的 DB 连接"""
+        store = self._store_cache.pop(story_id, None)
+        if store:
+            await store.close()
+
+    async def close_all_stores(self) -> None:
+        """关闭所有缓存的 DB 连接"""
+        for store in self._store_cache.values():
+            await store.close()
+        self._store_cache.clear()
 
     # ---- 路径解析 ----
 
@@ -214,11 +274,15 @@ class StoryManager:
     def update_progress(self, story_id: str, phase: int, phase_name: str, detail: str = "", percent: int = 0):
         progress = StoryProgress(phase=phase, phase_name=phase_name, detail=detail, percent=percent)
 
-        # 映射 phase 到 status
-        status_map = {1: "parsing", 2: "parsing", 3: "generating", 4: "generating"}
-        status = status_map.get(phase, "generating")
-
-        self.update_story(story_id, status=status, progress=progress, error=None)
+        # 映射 phase 到 status（但不覆盖 playable）
+        current = self.get_story(story_id)
+        if current and current.status == "playable":
+            # 已标记可玩，只更新进度不改状态
+            self.update_story(story_id, progress=progress, error=None)
+        else:
+            status_map = {1: "parsing", 2: "parsing", 3: "generating", 4: "generating"}
+            status = status_map.get(phase, "generating")
+            self.update_story(story_id, status=status, progress=progress, error=None)
 
         # 广播给订阅者
         asyncio.ensure_future(self._broadcast_progress(story_id, progress))
@@ -280,9 +344,10 @@ class StoryManager:
     # ---- 启动恢复 ----
 
     def get_interrupted_stories(self) -> list[str]:
-        """找到状态为 parsing/generating 的故事（服务器重启后需要恢复）"""
+        """找到状态为 parsing/generating 的故事（服务器重启后需要恢复）
+        注意：uploading 表示等待用户配置，不应自动恢复"""
         reg = self._load_registry()
         return [
             sid for sid, entry in reg.items()
-            if entry.status in ("parsing", "generating", "uploading")
+            if entry.status in ("parsing", "generating")
         ]

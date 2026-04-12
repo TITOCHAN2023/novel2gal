@@ -18,15 +18,20 @@ export default function GameScreen() {
   const autoPlayDelay = useGameStore((s) => s.settings.autoPlayDelay);
   const bgm = useGameStore((s) => s.bgm);
   const bgmVolume = useGameStore((s) => s.settings.bgmVolume);
+  const voiceVolume = useGameStore((s) => s.settings.voiceVolume);
   const addPlayTime = useGameStore((s) => s.addPlayTime);
   const showBacklog = useGameStore((s) => s.showBacklog);
   // waitingForContent 由 ProgressIndicator 处理
 
-  // BGM 管理
+  // BGM + 语音音量管理
   useEffect(() => {
     audioManager.setBgmVolume(bgmVolume);
     audioManager.playBgm(bgm);
   }, [bgm, bgmVolume]);
+
+  useEffect(() => {
+    audioManager.setVoiceVolume(voiceVolume);
+  }, [voiceVolume]);
 
   // 自动播放
   useEffect(() => {
@@ -44,15 +49,27 @@ export default function GameScreen() {
   // 键盘事件
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (showBacklog) return;
+      const state = useGameStore.getState();
       switch (e.key) {
         case ' ':
         case 'Enter':
-          if (!showingChoices) advanceLine();
+          if (!state.showBacklog && !state.showingChoices) advanceLine();
+          break;
+        case 'Escape':
+          if (state.showBacklog) state.toggleBacklog();
+          else state.setScreen('settings');
+          break;
+        case 'l':
+        case 'L':
+          state.toggleBacklog();
+          break;
+        case 'a':
+        case 'A':
+          if (!state.showBacklog) state.toggleAutoPlay();
           break;
       }
     },
-    [advanceLine, showingChoices, showBacklog]
+    [advanceLine]
   );
 
   useEffect(() => {

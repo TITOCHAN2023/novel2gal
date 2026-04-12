@@ -1,0 +1,44 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 shot of a modern but somewhat opulent conference room. The atmosphere is tense and charged, suggesting an imminent emotional explosion. Focus on detailed environmental elements like polished mahogany conference table, expensive, slightly dusty chairs, recessed lighting fixtures that cast long, dramatic shadows, and large windows showing the muted daylight outside. Dust motes are visible floating in shafts of light cutting through the room. The color palette should be deep, cool tones (blues, grays, browns), emphasizing a feeling of suffocating pressure and broken composure. Cinematic composition, high detail, volumetric lighting.",
+    "negative_prompt": "people, characters, messy, graffiti, overly bright, cartoonish, low quality, amateur drawing"
+  },
+  "character_sprites": [
+    {
+      "character_id": "旅人",
+      "character_name": "Traveler (Lumine/Aether)",
+      "prompt": "Full body character sprite of the Traveler. The pose should convey immense pent-up rage and disillusionment, perhaps gripping their fists or leaning slightly forward as if about to lunge. Expression: A mixture of deep hurt, defiance, and barely contained fury. Clothing details must match established lore (e.g., adventurer/traveler outfit). Lighting should be dramatic, catching the tension in their posture, set against a clean white background.",
+      "negative_prompt": "smiling, relaxed, subdued, casual clothes, bad anatomy, watermark"
+    },
+    {
+      "character_id": "铃木悟",
+      "character_name": "Sato Satoru (Suzuki Satoru)",
+      "prompt": "Half-body character sprite of Suzuki Satoru. Pose: Standing rigidly, shoulders tense, looking directly at the viewer/scene with an expression that has shifted from smugness to profound shock and anger. His posture suggests he is reeling from a blow to his authority or belief system. Clothing details should be impeccably tailored but slightly disheveled due to the emotional turmoil. White background, professional lighting.",
+      "negative_prompt": "laughing, indifferent, overly cheerful, messy hair (unless part of character design), bad hands"
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mei",
+      "prompt": "Three-quarter body character sprite of Tachi Mei. Pose: Defensive yet radiating intense conviction, possibly with one hand raised slightly in a gesture of desperate explanation or confrontation. Expression: A mixture of fear, righteous anger, and deep personal betrayal. Maintain the detailed anime/light novel style. White background.",
+      "negative_prompt": "submissive, crying excessively, weak posture, overly sexualized, simple clothing"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full body character sprite of Ulbert. Pose: Confrontational and powerful. He should look like the source of overwhelming pressure or revelation. His stance is dominant, but his expression must reflect the crumbling facade under emotional weight—a flicker of doubt mixed with absolute conviction. White background, dramatic lighting emphasizing his imposing presence.",
+      "negative_prompt": "scared, hesitant, small build, overly decorative clothing, smiling warmly"
+    },
+    {
+      "character_id": "Emerald Tablet",
+      "character_name": "Emerald Tablet (Object/Entity)",
+      "prompt": "A detailed, high-quality illustration of the Emerald Tablet itself. It should appear ancient, glowing subtly with internal, unstable energy, radiating a cold, undeniable truth that causes emotional shock in those around it. Composition: Object focus, slightly floating or resting on an unseen surface. Emphasize mystical, luminous details against the white background.",
+      "negative_prompt": "humanoid, cartoonish glow, mundane texture, damaged beyond recognition"
+    },
+    {
+      "character_id": "Brune Mung",
+      "character_name": "Brune Mung",
+      "prompt": "Half-body character sprite of Brune Mung. Pose: Initially composed but now visibly shaken by the outburst of emotion in the room. Expression: Deep contemplation mixed with palpable distress—the weight of the revelation is hitting him hard. Maintain consistency with his established outfit and demeanor. White background.",
+      "negative_prompt": "aggressive, overly confident, smiling easily, unnatural pose, poor detail on garments"
+    }
+  ]
+}

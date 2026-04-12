@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useGameStore } from '../../store/gameStore';
+import { audioManager } from '../../engine/AudioManager';
 import './DialogueBox.css';
 
 export default function DialogueBox() {
@@ -17,6 +18,16 @@ export default function DialogueBox() {
 
   const scene = script?.scenes[sceneId];
   const line = scene?.lines[lineIndex];
+
+  // 语音播放（有 voice 字段时自动播放）
+  useEffect(() => {
+    if (!line || showingChoices) return;
+    if (line.voice) {
+      audioManager.playVoice(line.voice);
+    } else {
+      audioManager.stopVoice();
+    }
+  }, [line, showingChoices]);
 
   // 打字机效果
   useEffect(() => {

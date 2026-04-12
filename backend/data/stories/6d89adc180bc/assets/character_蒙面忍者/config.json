@@ -1,0 +1,18 @@
+{
+  "id": "character_ninja_mask",
+  "name": "蒙面忍者",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "无畏",
+    "果断",
+    "具有攻击性"
+  ],
+  "speech_style": "语气带有嘲讽和绝对的自信，擅长直接且致命的宣告。",
+  "abilities": [
+    "战术分析",
+    "语言干扰（打断推理）"
+  ],
+  "appearance_summary": ""
+}

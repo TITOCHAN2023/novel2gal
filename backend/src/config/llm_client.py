@@ -55,6 +55,7 @@ class LLMClient:
         temperature: float | None = None,
         max_tokens: int | None = None,
         retries: int = 3,
+        response_format: dict | None = None,
     ) -> str:
         """发送 chat completion 请求（带重试）"""
         model = await self._resolve_model()
@@ -70,6 +71,8 @@ class LLMClient:
             "max_tokens": max_tokens or self.max_tokens,
             "reasoning_effort": "none",
         }
+        if response_format:
+            payload["response_format"] = response_format
 
         import asyncio, logging
         logger = logging.getLogger("llm_client")
@@ -94,9 +97,29 @@ class LLMClient:
         system: str = "",
         temperature: float | None = None,
         max_tokens: int | None = None,
+        schema: dict | None = None,
     ) -> dict:
-        """发送请求并解析 JSON 输出（容错提取）"""
-        raw = await self.chat(user, system, temperature, max_tokens)
+        """发送请求并解析 JSON 输出。优先用 structured output，fallback 到容错提取。"""
+        # 构建 response_format
+        response_format: dict | None = None
+        if schema:
+            response_format = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": schema.get("name", "output"),
+                    "strict": True,
+                    "schema": schema.get("schema", schema),
+                },
+            }
+        else:
+            # 没有 schema 也要求 json_object 模式
+            response_format = {"type": "json_object"}
+
+        raw = await self.chat(
+            user, system, temperature, max_tokens,
+            response_format=response_format,
+        )
+        # structured output 模式下输出应该直接是合法 JSON，但仍做容错
         return extract_json(raw)
 
     async def close(self):

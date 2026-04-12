@@ -1,0 +1,558 @@
+{
+  "scene_root": {
+    "id": "scene_root",
+    "location": "遗迹/开阔场所",
+    "background": "",
+    "bgm": "",
+    "bgm_mood": "mystery",
+    "transition": "fade",
+    "characters": [
+      {
+        "id": "suzuki_satoru",
+        "name": "铃木悟 (Suzuki Satoru)",
+        "sprite": "",
+        "position": "left",
+        "isActive": false,
+        "flipped": false
+      },
+      {
+        "id": "feishu",
+        "name": "塔其米 (Tachimi)",
+        "sprite": "",
+        "position": "center",
+        "isActive": false,
+        "flipped": false
+      },
+      {
+        "id": "tachi_mi",
+        "name": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "sprite": "",
+        "position": "right",
+        "isActive": false,
+        "flipped": false
+      }
+    ],
+    "lines": [
+      {
+        "type": "narration",
+        "character": null,
+        "text": "在王座散发出的神圣余晖中，空气仿佛凝固了一般。所有人都还沉浸在刚才战胜BOSS和发现‘诸王的王座’带来的狂热情绪里。但随着时间流逝，兴奋感逐渐褪去，取而代之的是对新权力结构、公会运作模式的理性审视。"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "*扫视四周，动作平稳* 大家的情绪都比较高涨。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "不过，这种状态可不太持续的吧？",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "*微微侧身* 我们需要把注意力重新聚焦到流程上。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "悟说得对。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "*环视四周，目光扫过众人* 过度的兴奋只会让人忽略关键信息。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "我们得冷静下来，分析一下接下来的每一步。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "*嗤笑一声* 分析？",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "black_trenchcoat"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "你们的理性可真是让人乏味。",
+        "emotion": "angry",
+        "emotion_intensity": 4,
+        "outfit": "black_trenchcoat"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "难道战胜了神祇，就该像个会计师一样斤斤计较吗？",
+        "emotion": "scornful",
+        "emotion_intensity": 5,
+        "outfit": "black_trenchcoat"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "**分析目标：** 描绘从战胜BOSS的兴奋期，过渡到塔其米要求冷静分析，乌尔贝特用轻蔑态度进行挑衅的瞬间。氛围需要从“亢奋”转向“紧张/对抗”。 **关键元素提炼：** 1.  **地点环境：** 王座散发的神圣余晖（背景光源）。 2.  **情绪变化：** 兴奋 $\\rightarrow$ 冷静审视 $\\rightarrow$ 冲突。 3.  **核心动作/状态：** 群体停顿、空气凝固感增强。"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "哼，乌尔贝特。",
+        "emotion": "angry",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "*上前一步，语气强硬* 别用这种态度。",
+        "emotion": "serious",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "战胜BOSS只是开始，我们必须规划接下来的每一步。",
+        "emotion": "worried",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "*轻笑一声* 两位都有些激动了。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "*扫视全场，目光平静* 情绪的波动只会消耗精力。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "关键在于效率，而不是谁更兴奋。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "情绪波动……确实会造成资源损耗。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "*微微抬手，做了个整理的动作* 我们需要一个流程化的评估。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "下一步的目标是什么？请明确一下任务参数。",
+        "emotion": "excited",
+        "emotion_intensity": 5,
+        "outfit": "casual"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "Thought Process: 1.  **Analyze the Request:** The user wants me to act as a visual novel narrator, generating 1-2 lines of third-person description (focusing on environment, character actions/expressions, or atmosphere change) based on the provided context. I must *not* include any dialogue. 2.  **Analyze the Context:**     *   **Setting:** Ruins/Open area. A throne radiates divine afterglow.     *   **Initial Mood:** High excitement from defeating a boss and finding the \"Throne of Kings.\"     *   **Current Shift:** Excitement is"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "*扫视全场，目光落在铃木身上* 流程化评估……。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "确实，情绪过后，回归理智是必要的。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "我们应该先确认一下公会的新规矩。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "冷静下来就好。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "*微微颔首，目光扫过众人*。",
+        "emotion": "neutral",
+        "emotion_intensity": 2,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "流程和规则，确实是下一步的重点。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "大家冷静下来很好。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "suit"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "确实，现在需要回归到‘系统’的层面思考。",
+        "emotion": "serious",
+        "emotion_intensity": 4,
+        "outfit": "suit"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "关于公会规则，我来做个总结和补充吧。",
+        "emotion": "determined",
+        "emotion_intensity": 5,
+        "outfit": "suit"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "The user wants me to act as the narrator for a visual novel scene. Current setting: Ruins/Open area, under the divine glow of the throne. The atmosphere is transitioning from post-battle euphoria to sober reflection on power structures and guild rules. Previous context: Characters (Ulbert Alain Ode, Bünnümeng) are guiding the group toward discussing necessary \"systems\" and \"rules.\" Goal: Write 1-2 descriptive sentences in the third person, focusing on environmental changes, character expressions/actions, or atmosphere shifts, *without* dialogue. Plan: 1. Acknowledge the transition"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "*轻咳一声* 大家的情绪都很激动。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "不过，我也补充一点看法。",
+        "emotion": "worried",
+        "emotion_intensity": 3,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "我们不能只关注‘规则’本身。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "*手指在空中快速敲击了几下*。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "规则是流程的体现，核心在于可执行性。",
+        "emotion": "excited",
+        "emotion_intensity": 4,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "不能只看‘本身’，必须看它如何融入既有系统。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "*扫视众人一眼* 说得对。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "光有规则是空谈。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "关键是要落地，让它能发挥作用。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "Thought Process: 1.  **Analyze the current scene:** Location is an ancient ruin/open area, dominated by a divine aura from the 'Throne of Kings'. The initial high emotion (victory) is fading, replaced by intellectual assessment of power structure and guild operations. 2.  **Analyze the last dialogue exchange:** Suzuki Satoru focuses on *process* and *implementability*. Tachimi echoes this, emphasizing that rules need to be *actionable* and *functional*. The tone is shifting from excitement to pragmatic strategy. 3.  **Determine the required output:** 1-2 sentences of third"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "*扫视四周的众人* 大家都很热血。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "但情绪过后，理性才是更重要的东西。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "*双手抱胸* 我们需要思考的是如何构建稳定的基础。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "确实如此。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "suit"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "*推了推眼镜* 刚才的战斗很精彩，但现在需要更宏观的视角。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "suit"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "我们需要讨论的是公会的长期运营和下一步的目标规划。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "suit"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "你们都太关注结果了。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "*微微一笑* 忽略了最关键的环节。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "就是‘如何发现’这个过程本身。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "trench_coat"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "Thought Process: 1.  **Analyze the Request:** The goal is to act as a visual novel narrator, generating 1-2 lines of third-person narration based on the preceding context and dialogue turn. Crucially, *no character dialogue* should be included. 2.  **Analyze the Context:**     *   **Location:** Ruins/Open Area.     *   **Atmosphere (Initial):** Divine glow from the throne, initial euphoria after defeating the boss/finding the throne.     *   **Transitioning Mood:** Euphoria $\\rightarrow$ Rational scrutiny of power structure/guild operations."
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "流程是基础。",
+        "emotion": "neutral",
+        "emotion_intensity": 7,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "*手指在空中快速点动* 任何系统都需要清晰的输入和明确的规则来运行。",
+        "emotion": "excited",
+        "emotion_intensity": 6,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "铃木悟 (Suzuki Satoru)",
+        "text": "我们应该先确定信息获取的优先级，好吗？",
+        "emotion": "happy",
+        "emotion_intensity": 5,
+        "outfit": "casual"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "小队的效率毋庸置疑。",
+        "emotion": "neutral",
+        "emotion_intensity": 4,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "塔其米 (Tachimi)",
+        "text": "*微微扬起下巴* 但流程的设定，也需要更强的指引。",
+        "emotion": "worried",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "*皱起眉头* 你们的关注点……",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "都过于分散了。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+        "text": "关于‘如何发现’的质疑，也需要更深入的探讨。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "dark_robe"
+      },
+      {
+        "type": "narration",
+        "character": null,
+        "text": "复习一下需求： 1. **身份定位**：视觉小说叙述者。 2. **任务**：根据角色互动进展，生成适当的旁白/环境描写。 3. **场景设定**：遗迹/开阔场所；王座散发神圣余晖；从狂热情绪转向理性审视权力结构和公会运作。 4. **最近对话焦点**：铃木（信息获取优先级）-> 塔其米（流程指引）-> 乌尔贝特（关注点分散，质疑“如何发现”）。 **分析当前的氛围"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "大家的情绪都很激动。",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "*抱拳一笑* 不过，现在不是争论流程的时候。",
+        "emotion": "happy",
+        "emotion_intensity": 4,
+        "outfit": "robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "布钮萌",
+        "text": "我们得先回归到‘目标’本身。",
+        "emotion": "worried",
+        "emotion_intensity": 5,
+        "outfit": "robe"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "*抬起头，目光扫视全场* 诸位的话……",
+        "emotion": "neutral",
+        "emotion_intensity": 3,
+        "outfit": "tattered_cloak"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "都触及到了关键点。",
+        "emotion": "worried",
+        "emotion_intensity": 4,
+        "outfit": "tattered_cloak"
+      },
+      {
+        "type": "dialogue",
+        "character": "未知",
+        "text": "但从‘流程’说起，似乎忽略了‘根源’的本质。",
+        "emotion": "neutral",
+        "emotion_intensity": 5,
+        "outfit": "tattered_cloak"
+      }
+    ],
+    "choices": [
+      {
+        "text": "继续探索",
+        "targetScene": "scene_root_c0"
+      },
+      {
+        "text": "改变话题",
+        "targetScene": "scene_root_c1"
+      }
+    ],
+    "depth": 0,
+    "parentId": null,
+    "_story_summary": "\n场景scene_root: 在王座散发出的神圣余晖中，空气仿佛凝固了一般。所有人都还沉浸在刚才战胜BOSS和发现‘诸王的王座’带来的狂热情绪里。但随着时间流逝，兴奋感逐渐褪去，取而代之的是对新权力结构、公会运作模式的理性审视。 铃木悟 (Suzuki Satoru): *扫视四周，动作平稳* 大家的情绪都比较高涨。 铃木悟 (Suzuki Satoru): 不过，这种状态可不太持续的吧？ 铃木悟 (Suzuki Satoru"
+  }
+}

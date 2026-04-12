@@ -1,0 +1,17 @@
+{
+  "id": "待定",
+  "name": "飞鼠",
+  "aliases": [],
+  "age": "",
+  "identity": "公会相关人物",
+  "traits": [
+    "有影响力",
+    "具有目的性",
+    "擅长施压"
+  ],
+  "speech_style": "通过邮件进行暗示和施压。",
+  "abilities": [
+    "（无明确能力描述）"
+  ],
+  "appearance_summary": ""
+}

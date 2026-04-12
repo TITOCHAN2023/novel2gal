@@ -18,47 +18,31 @@ function openDB(): Promise<IDBDatabase> {
   });
 }
 
-export async function saveGame(slot: SaveSlot): Promise<void> {
+async function withDB<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => IDBRequest): Promise<T> {
   const db = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    tx.objectStore(STORE_NAME).put(slot);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
+    const tx = db.transaction(STORE_NAME, mode);
+    const req = fn(tx.objectStore(STORE_NAME));
+    req.onsuccess = () => resolve(req.result as T);
+    tx.oncomplete = () => db.close();
+    tx.onerror = () => { db.close(); reject(tx.error); };
   });
+}
+
+export async function saveGame(slot: SaveSlot): Promise<void> {
+  await withDB('readwrite', (store) => store.put(slot));
 }
 
 export async function loadGame(slotId: number): Promise<SaveSlot | null> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const req = tx.objectStore(STORE_NAME).get(slotId);
-    req.onsuccess = () => resolve(req.result ?? null);
-    req.onerror = () => reject(req.error);
-  });
+  const result = await withDB<SaveSlot | undefined>('readonly', (store) => store.get(slotId));
+  return result ?? null;
 }
 
 export async function listSaves(): Promise<SaveSlot[]> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const req = tx.objectStore(STORE_NAME).getAll();
-    req.onsuccess = () => {
-      const slots = (req.result as SaveSlot[]).sort(
-        (a, b) => b.timestamp - a.timestamp
-      );
-      resolve(slots);
-    };
-    req.onerror = () => reject(req.error);
-  });
+  const slots = await withDB<SaveSlot[]>('readonly', (store) => store.getAll());
+  return slots.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 }
 
 export async function deleteSave(slotId: number): Promise<void> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    tx.objectStore(STORE_NAME).delete(slotId);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
+  await withDB('readwrite', (store) => store.delete(slotId));
 }

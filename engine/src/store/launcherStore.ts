@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 
-const API_BASE = `http://${window.location.hostname}:8080`;
+// 开发模式走 Vite proxy（/api → :8080），生产模式同源
+const API_BASE = '';
+
+export interface StorySettings {
+  player_role: string;
+  initial_depth: number;
+  gap: number;
+  max_branches: number;
+}
 
 export interface StoryEntry {
   id: string;
@@ -9,7 +17,7 @@ export interface StoryEntry {
   filename: string;
   created_at: string;
   updated_at: string;
-  status: 'uploading' | 'parsing' | 'generating' | 'ready' | 'error' | 'queued';
+  status: 'uploading' | 'parsing' | 'generating' | 'playable' | 'ready' | 'error' | 'queued';
   progress: {
     phase: number;
     phase_name: string;
@@ -23,6 +31,7 @@ export interface StoryEntry {
     characters: number;
     scenes: number;
   };
+  settings?: StorySettings;
 }
 
 interface LauncherState {
@@ -35,6 +44,8 @@ interface LauncherState {
   clearStory: () => void;
   uploadBook: (file: File) => Promise<string | null>;
   deleteStory: (id: string) => Promise<boolean>;
+  refreshAssets: (id: string) => Promise<boolean>;
+  configureAndStart: (id: string, settings: StorySettings) => Promise<boolean>;
   updateStoryFromWS: (storyId: string, patch: Partial<StoryEntry>) => void;
 }
 
@@ -100,6 +111,36 @@ export const useLauncherStore = create<LauncherState>((set, get) => ({
       return false;
     } catch (e) {
       console.warn('[launcherStore] deleteStory 网络错误:', e);
+      return false;
+    }
+  },
+
+  refreshAssets: async (id) => {
+    try {
+      const resp = await fetch(`${API_BASE}/api/stories/${id}/refresh-assets`, { method: 'POST' });
+      if (!resp.ok) return false;
+      const data = await resp.json();
+      return data.success === true;
+    } catch {
+      return false;
+    }
+  },
+
+  configureAndStart: async (id, settings) => {
+    try {
+      const resp = await fetch(`${API_BASE}/api/stories/${id}/configure`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      });
+      if (!resp.ok) return false;
+      const data = await resp.json();
+      if (data.success) {
+        await get().fetchStories();
+        return true;
+      }
+      return false;
+    } catch {
       return false;
     }
   },

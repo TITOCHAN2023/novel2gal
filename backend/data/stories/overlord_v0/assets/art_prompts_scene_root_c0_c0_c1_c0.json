@@ -1,0 +1,32 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 shot of a modern, high-end conference room. The atmosphere is thick with an invisible, suffocating mist or haze that seems to hang low in the air, diffusing all light sources into a soft, oppressive glow. The furniture—polished mahogany table, sleek chairs—reflects dimly under this diffused light. Details should include expensive, slightly dusty decorative elements (like abstract sculptures or potted plants) that are partially obscured by the fog. The overall mood is tense, stagnant, and foreboding. Day time lighting filtering through large, unseen windows, but heavily muted by the haze. High detail, cinematic composition.",
+    "negative_prompt": "people, characters, bright sunlight, clear sky, overly cheerful, cartoonish, low resolution, messy"
+  },
+  "character_sprites": [
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mi",
+      "prompt": "Full body portrait of Tachi Mi. She is standing in a tense, poised manner, perhaps with one hand resting near the table edge or crossed arms, conveying deep thought and controlled tension. Her expression should be serious, calculating, and slightly weary. Maintain her established outfit details. The lighting on her sprite should match the scene's diffused, hazy daylight—soft shadows, no harsh highlights. White background, high quality anime illustration style.",
+      "negative_prompt": "smiling, overly casual, bright colors, messy hair, low detail"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full body portrait of Ulbert. He stands in a dominant yet constrained posture within the conference room setting (though on a white background for the sprite). His expression is intense, perhaps conveying suppressed power or deep conviction. Maintain his established costume details. The lighting should be consistent with the hazy, oppressive atmosphere—subdued tones, dramatic but soft shading. White background, high quality anime illustration style.",
+      "negative_prompt": "relaxed, smiling, messy clothing, overly vibrant colors, poorly drawn hands"
+    },
+    {
+      "character_id": "Emerald Tablet",
+      "character_name": "Emerald Tablet",
+      "prompt": "A detailed portrait emphasizing the object itself, perhaps with a subtle ethereal glow emanating from it, suggesting its inherent power. If depicted as an object held or placed, ensure the surrounding area feels charged with energy. The overall aesthetic must be ancient yet magically sophisticated. Lighting should be dramatic, catching edges of the tablet while remaining consistent with the misty/diffused ambient light source hinted at in the scene. White background, high quality anime illustration style.",
+      "negative_prompt": "cartoonish glow, visible seams, modern materials, overly bright spotlights, messy composition"
+    },
+    {
+      "character_id": "佩罗罗奇诺",
+      "character_name": "Perorochino",
+      "prompt": "Full body portrait of Perorochino. She is depicted in a state of quiet readiness or contained energy. Her pose should suggest underlying tension, perhaps leaning slightly forward or observing something just out of frame. Her facial expression is complex—a mix of calculation and subtle defiance. Ensure her attire details are sharply rendered despite the soft lighting suggestion. White background, high quality anime illustration style.",
+      "negative_prompt": "overly aggressive pose, smiling widely, distracting background elements, inconsistent costume shading"
+    }
+  ]
+}

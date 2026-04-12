@@ -94,7 +94,7 @@ def chunk_novel(
             paragraphs = re.split(r'\n\s*\n', body)
             current_text = ""
             for para in paragraphs:
-                if len(current_text) + len(para) > max_chars and current_text:
+                if len(current_text) + len(para) + 2 > max_chars and current_text:  # +2 for \n\n separator
                     chunks.append(Chunk(
                         index=chunk_idx,
                         chapter=chapter_num,

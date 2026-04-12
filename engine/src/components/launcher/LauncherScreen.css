@@ -130,6 +130,17 @@
   color: #69db7c;
 }
 
+.badge--playable {
+  background: rgba(232, 193, 112, 0.15);
+  color: #e8c170;
+  animation: playable-pulse 2s ease infinite;
+}
+
+@keyframes playable-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
 .badge--processing {
   background: rgba(232, 193, 112, 0.15);
   color: #e8c170;

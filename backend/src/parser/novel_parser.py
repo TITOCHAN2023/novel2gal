@@ -30,9 +30,19 @@ from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
 try:
     from ..config.llm_client import LLMClient
     from .chunker import chunk_novel, Chunk
+    from .schemas import (
+        EXTRACT_CHARACTERS_SCHEMA, EXTRACT_LOCATIONS_SCHEMA,
+        EXTRACT_EVENTS_SCHEMA, EXTRACT_DIALOGUES_SCHEMA,
+        UPDATE_CHARACTER_CARD_SCHEMA, SYNTHESIZE_SCHEMA,
+    )
 except ImportError:
     from config.llm_client import LLMClient
     from parser.chunker import chunk_novel, Chunk
+    from parser.schemas import (
+        EXTRACT_CHARACTERS_SCHEMA, EXTRACT_LOCATIONS_SCHEMA,
+        EXTRACT_EVENTS_SCHEMA, EXTRACT_DIALOGUES_SCHEMA,
+        UPDATE_CHARACTER_CARD_SCHEMA, SYNTHESIZE_SCHEMA,
+    )
 
 console = Console()
 
@@ -235,32 +245,46 @@ class NovelParser:
         self.llm = llm
         self.max_chunk_chars = max_chunk_chars
 
-    async def _micro_pass(self, system: str, user_content: str) -> dict:
-        """执行一个 micro-pass（单次 LLM 调用 + JSON 提取）"""
-        return await self.llm.chat_json(system=system, user=user_content, temperature=0.3)
+    async def _micro_pass(self, system: str, user_content: str, schema: dict | None = None, retries: int = 2) -> dict:
+        """执行一个 micro-pass（structured output + fallback 容错）"""
+        import logging
+        logger = logging.getLogger("parser")
+        for attempt in range(retries + 1):
+            try:
+                return await self.llm.chat_json(
+                    system=system, user=user_content,
+                    temperature=0.3, schema=schema,
+                )
+            except (ValueError, Exception) as e:
+                if attempt < retries:
+                    logger.warning(f"micro-pass 失败 (尝试 {attempt+1}/{retries+1}): {str(e)[:100]}，重试...")
+                    await asyncio.sleep(2)
+                else:
+                    logger.error(f"micro-pass 最终失败: {str(e)[:200]}，返回空结果")
+                    return {}
 
-    # ---- 逐块 Micro-passes ----
+    # ---- 逐块 Micro-passes（全部使用 structured output schema） ----
 
     async def extract_characters(self, text: str, known_ids: dict[str, str]) -> list[dict]:
         hint = ""
         if known_ids:
             hint = f"\n\n已知角色ID映射（请复用这些ID）：\n{json.dumps(known_ids, ensure_ascii=False)}"
-        result = await self._micro_pass(EXTRACT_CHARACTERS, text + hint)
+        result = await self._micro_pass(EXTRACT_CHARACTERS, text + hint, schema=EXTRACT_CHARACTERS_SCHEMA)
         return result.get("characters", [])
 
     async def extract_locations(self, text: str) -> list[dict]:
-        result = await self._micro_pass(EXTRACT_LOCATIONS, text)
+        result = await self._micro_pass(EXTRACT_LOCATIONS, text, schema=EXTRACT_LOCATIONS_SCHEMA)
         return result.get("locations", [])
 
     async def extract_events(self, text: str, characters: list[dict], locations: list[dict]) -> dict:
         context = f"本段出现的角色：{json.dumps([c['id'] for c in characters], ensure_ascii=False)}\n"
         context += f"本段出现的地点：{json.dumps([l['id'] for l in locations], ensure_ascii=False)}\n\n"
-        result = await self._micro_pass(EXTRACT_EVENTS, context + text)
+        result = await self._micro_pass(EXTRACT_EVENTS, context + text, schema=EXTRACT_EVENTS_SCHEMA)
         return result
 
     async def extract_dialogues(self, text: str, characters: list[dict]) -> dict[str, list[str]]:
         context = f"本段出现的角色ID：{json.dumps([c['id'] for c in characters], ensure_ascii=False)}\n\n"
-        result = await self._micro_pass(EXTRACT_DIALOGUES, context + text)
+        result = await self._micro_pass(EXTRACT_DIALOGUES, context + text, schema=EXTRACT_DIALOGUES_SCHEMA)
         return result.get("dialogues", {})
 
     async def update_character_card(
@@ -274,45 +298,42 @@ class NovelParser:
             new_dialogues=json.dumps(new_dialogues, ensure_ascii=False),
             new_events=json.dumps(new_events, ensure_ascii=False),
         )
-        return await self._micro_pass(prompt, f"请更新角色 {char_id} 的角色卡。")
+        return await self._micro_pass(prompt, f"请更新角色 {char_id} 的角色卡。", schema=UPDATE_CHARACTER_CARD_SCHEMA)
 
     # ---- 逐块处理主流程 ----
 
     async def process_chunk(self, chunk: Chunk, state: ParseState) -> ChunkResult:
-        """处理一个文本块（5个micro-pass顺序执行）"""
+        """处理一个文本块（并行提取 + 顺序更新角色卡）"""
         text = chunk.text
         result = ChunkResult(chunk_index=chunk.index)
 
-        # 1. 提取角色
-        console.print(f"  [dim]├─ 角色提取...[/]")
-        result.characters = await self.extract_characters(text, state.known_character_ids)
+        # ---- 第一波：角色 + 地点并行提取 ----
+        console.print(f"  [dim]├─ 角色+地点提取（并行）...[/]")
+        chars_task = asyncio.create_task(self.extract_characters(text, state.known_character_ids))
+        locs_task = asyncio.create_task(self.extract_locations(text))
+        result.characters, result.locations = await asyncio.gather(chars_task, locs_task)
+
         for c in result.characters:
             state.known_character_ids[c["name"]] = c["id"]
             for alias in c.get("aliases", []):
                 state.known_character_ids[alias] = c["id"]
 
-        # 2. 提取地点
-        console.print(f"  [dim]├─ 地点提取...[/]")
-        result.locations = await self.extract_locations(text)
-
-        # 3. 提取事件
-        console.print(f"  [dim]├─ 事件提取...[/]")
-        events_data = await self.extract_events(text, result.characters, result.locations)
+        # ---- 第二波：事件 + 对话并行提取（依赖角色/地点结果） ----
+        console.print(f"  [dim]├─ 事件+对话提取（并行）...[/]")
+        events_task = asyncio.create_task(self.extract_events(text, result.characters, result.locations))
+        dialogues_task = asyncio.create_task(self.extract_dialogues(text, result.characters))
+        events_data, result.dialogues = await asyncio.gather(events_task, dialogues_task)
         result.events = events_data.get("events", [])
         result.chapter_summary = events_data.get("chapter_summary", "")
 
-        # 4. 提取对话
-        console.print(f"  [dim]├─ 对话提取...[/]")
-        result.dialogues = await self.extract_dialogues(text, result.characters)
-
-        # 5. 更新每个角色的角色卡（逐章递进）
+        # ---- 第三波：角色卡并行更新（每个角色独立） ----
+        card_tasks = []
+        card_chars = []
         for char in result.characters:
             cid = char["id"]
-            # 跳过"仅被提及"的角色
             if "仅被提及" in char.get("description", ""):
                 continue
 
-            console.print(f"  [dim]├─ 更新角色卡: {char['name']}...[/]")
             current_card = None
             if cid in state.character_card_versions and state.character_card_versions[cid]:
                 current_card = state.character_card_versions[cid][-1]
@@ -323,13 +344,21 @@ class NovelParser:
             ]
             char_dialogues = result.dialogues.get(cid, [])
 
-            updated_card = await self.update_character_card(
-                cid, current_card,
-                char.get("description", ""),
-                char_dialogues,
-                char_events,
-            )
-            state.character_card_versions.setdefault(cid, []).append(updated_card)
+            card_tasks.append(self.update_character_card(
+                cid, current_card, char.get("description", ""), char_dialogues, char_events,
+            ))
+            card_chars.append(char)
+
+        if card_tasks:
+            console.print(f"  [dim]├─ 更新 {len(card_tasks)} 个角色卡（并行）...[/]")
+            updated_cards = await asyncio.gather(*card_tasks, return_exceptions=True)
+            for char, updated_card in zip(card_chars, updated_cards):
+                if isinstance(updated_card, Exception):
+                    import logging
+                    logging.getLogger("parser").warning(f"角色卡更新失败 [{char['id']}]: {updated_card}")
+                    continue
+                if updated_card:
+                    state.character_card_versions.setdefault(char["id"], []).append(updated_card)
 
         console.print(f"  [dim]└─ 完成[/]")
         state.chunk_results.append(result)
@@ -351,7 +380,7 @@ class NovelParser:
             all_characters=json.dumps(all_char_names, ensure_ascii=False, indent=2),
         )
         console.print("[cyan]跨章合成：关系网 + 世界观规则 + 转折点...[/]")
-        return await self._micro_pass(prompt, "请进行全书跨章分析。")
+        return await self._micro_pass(prompt, "请进行全书跨章分析。", schema=SYNTHESIZE_SCHEMA)
 
     # ---- 主入口 ----
 

@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { useLauncherStore } from '../../store/launcherStore';
+import type { StorySettings } from '../../store/launcherStore';
 import { useBackend, sendToBackend } from '../../hooks/useBackend';
 import './SetupScreen.css';
 
@@ -19,16 +20,26 @@ export default function SetupScreen() {
   const selectStory = useLauncherStore((s) => s.selectStory);
   const fetchStories = useLauncherStore((s) => s.fetchStories);
   const updateStoryFromWS = useLauncherStore((s) => s.updateStoryFromWS);
+  const configureAndStart = useLauncherStore((s) => s.configureAndStart);
 
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [starting, setStarting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 设置表单状态
+  const [playerRole, setPlayerRole] = useState('');
+  const [initialDepth, setInitialDepth] = useState(2);
+  const [gap, setGap] = useState(3);
+  const [maxBranches, setMaxBranches] = useState(2);
 
   const currentStory = stories.find((s) => s.id === currentStoryId) || null;
   const isUploadMode = !currentStoryId || !currentStory;
   const isReady = currentStory?.status === 'ready';
+  const isPlayable = currentStory?.status === 'playable';
   const isError = currentStory?.status === 'error';
-
+  // uploading 或 error 状态 = 等待用户配置/重试
+  const isConfigMode = currentStory?.status === 'uploading' || currentStory?.status === 'error';
   // 监听 WebSocket 进度更新
   useBackend(useCallback((data: Record<string, unknown>) => {
     if (data.type === 'pipeline_progress' && data.story_id) {
@@ -43,6 +54,9 @@ export default function SetupScreen() {
     }
     if (data.type === 'pipeline_done' && data.story_id) {
       fetchStories(); // 刷新状态
+    }
+    if (data.type === 'story_playable' && data.story_id) {
+      fetchStories(); // 刷新状态（会拿到 playable）
     }
   }, [updateStoryFromWS, fetchStories]));
 
@@ -85,6 +99,19 @@ export default function SetupScreen() {
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
+  };
+
+  const handleStartPipeline = async () => {
+    if (!currentStoryId || starting) return;
+    setStarting(true);
+    const settings: StorySettings = {
+      player_role: playerRole,
+      initial_depth: initialDepth,
+      gap,
+      max_branches: maxBranches,
+    };
+    await configureAndStart(currentStoryId, settings);
+    setStarting(false);
   };
 
   // ---- 上传模式 ----
@@ -131,6 +158,80 @@ export default function SetupScreen() {
     );
   }
 
+  // ---- 配置模式（上传完成，等待用户设置） ----
+  if (isConfigMode) {
+    return (
+      <div className="setup-screen">
+        <button className="setup-back" onClick={() => setScreen('launcher')}>
+          &larr; 返回书架
+        </button>
+
+        <div className="setup-content">
+          <h2 className="setup-title">{currentStory?.title}</h2>
+          <p className="setup-desc">配置你的游戏体验</p>
+
+          <div className="setup-config">
+            <div className="setup-config__field">
+              <label className="setup-config__label">扮演角色</label>
+              <input
+                type="text"
+                className="setup-config__input"
+                value={playerRole}
+                onChange={(e) => setPlayerRole(e.target.value)}
+                placeholder="留空 = 创建新角色「旅人」，或输入原著角色名"
+              />
+              <span className="setup-config__hint">可输入角色名（如"铃木悟"）扮演原著角色，或留空创建新角色</span>
+            </div>
+
+            <div className="setup-config__field">
+              <label className="setup-config__label">剧情深度 (Initial Depth): {initialDepth}</label>
+              <input
+                type="range"
+                className="setup-config__slider"
+                min={1} max={5} step={1}
+                value={initialDepth}
+                onChange={(e) => setInitialDepth(Number(e.target.value))}
+              />
+              <span className="setup-config__hint">初始生成的剧情树层数，越深等待越长但内容越丰富</span>
+            </div>
+
+            <div className="setup-config__field">
+              <label className="setup-config__label">预生成缓冲 (Gap): {gap}</label>
+              <input
+                type="range"
+                className="setup-config__slider"
+                min={1} max={8} step={1}
+                value={gap}
+                onChange={(e) => setGap(Number(e.target.value))}
+              />
+              <span className="setup-config__hint">游玩时保持前方几层预生成场景，防止等待</span>
+            </div>
+
+            <div className="setup-config__field">
+              <label className="setup-config__label">分支数: {maxBranches}</label>
+              <input
+                type="range"
+                className="setup-config__slider"
+                min={1} max={4} step={1}
+                value={maxBranches}
+                onChange={(e) => setMaxBranches(Number(e.target.value))}
+              />
+              <span className="setup-config__hint">每个选择点的选项数量</span>
+            </div>
+          </div>
+
+          <button
+            className="setup-play-btn"
+            onClick={handleStartPipeline}
+            disabled={starting}
+          >
+            {starting ? '启动中...' : '开始生成'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // ---- 进度模式 ----
   const phase = currentStory?.progress?.phase || 0;
   const percent = currentStory?.progress?.percent || 0;
@@ -149,7 +250,6 @@ export default function SetupScreen() {
           <div className="setup-error">
             <p className="setup-error__text">{currentStory?.error || '初始化失败'}</p>
             <button className="setup-retry-btn" onClick={() => {
-              // TODO: 重试
               fetchStories();
             }}>
               重试
@@ -165,6 +265,17 @@ export default function SetupScreen() {
             </div>
             <button className="setup-play-btn" onClick={() => setScreen('title')}>
               开始游玩
+            </button>
+          </div>
+        ) : isPlayable ? (
+          <div className="setup-done">
+            <div className="setup-done__icon" style={{color: '#e8c170'}}>&#9654;</div>
+            <p className="setup-done__text">第一章已就绪！</p>
+            <p className="setup-hint" style={{marginTop: 0, marginBottom: 16}}>
+              后续章节仍在后台生成，你可以先开始游玩
+            </p>
+            <button className="setup-play-btn" onClick={() => setScreen('title')}>
+              立即开始游玩
             </button>
           </div>
         ) : (

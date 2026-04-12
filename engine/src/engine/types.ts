@@ -29,6 +29,8 @@ export interface ScriptLine {
   emotion_intensity?: number;
   /** 角色当前着装（对应资产池索引） */
   outfit?: string;
+  /** 语音文件路径（TTS 生成） */
+  voice?: string;
   /** 该行显示时对角色和场景的即时变更 */
   effects?: LineEffect[];
 }
@@ -122,6 +124,7 @@ export interface GameSettings {
   sfxVolume: number;        // 0-1
   voiceVolume: number;      // 0-1
   fullscreen: boolean;
+  gap: number;              // Gap 预生成缓冲层数
 }
 
 export const DEFAULT_SETTINGS: GameSettings = {
@@ -131,6 +134,7 @@ export const DEFAULT_SETTINGS: GameSettings = {
   sfxVolume: 0.8,
   voiceVolume: 0.8,
   fullscreen: false,
+  gap: 3,
 };
 
 // ============================================================

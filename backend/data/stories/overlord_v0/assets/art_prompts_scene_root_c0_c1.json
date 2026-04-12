@@ -1,0 +1,44 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 aspect ratio illustration of a modern, high-end conference room. The atmosphere is thick with lingering tension and emotional residue from a recent confrontation. Dust motes are visible floating in shafts of weak daylight filtering through large, stylized windows. The furniture should be sleek, expensive, and somewhat imposing (e.g., dark wood paneling, polished glass table). Subtle details suggesting high stakes—perhaps scattered papers or an overly pristine, almost sterile environment—should enhance the mood of a temporary, fragile calm. The lighting is diffused daylight, casting soft but dramatic shadows that emphasize the emptiness left by the characters.",
+    "negative_prompt": "people, crowd, overly bright, cheerful, messy, action lines, cartoonish, low detail"
+  },
+  "character_sprites": [
+    {
+      "character_id": "旅人",
+      "character_name": "Traveler",
+      "prompt": "Full-body character portrait of the Traveler. The style must be consistent with Japanese anime/light novel illustration, detailed, and high quality. The traveler stands in a neutral, ready stance, perhaps with one hand slightly outstretched or resting near their side, conveying exhaustion mixed with vigilance. Their expression is measured, thoughtful, and guarded. Clothing details should be richly rendered, matching the established world aesthetic. Posing against a pure white background.",
+      "negative_prompt": "smiling widely, aggressive pose, messy clothes, exaggerated features, low detail"
+    },
+    {
+      "character_id": "铃木悟",
+      "character_name": "Sato Goro (Sato)",
+      "prompt": "Half-body character portrait of Sato Goro. Consistent Japanese anime/light novel illustration style, detailed, high quality. He is depicted in a moment of intense internal conflict or strained composure. His expression should be taut, showing suppressed emotion and deep thought. Posing against a pure white background. Focus on the texture and fit of his attire.",
+      "negative_prompt": "overly casual pose, laughing, distracting background elements, blurry, childish look"
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mi",
+      "prompt": "Half-body character portrait of Tachi Mi. Consistent Japanese anime/light novel illustration style, detailed, high quality. She is positioned with a composed, authoritative posture, embodying the role of the temporary mediator. Her expression should be firm, empathetic yet distant, conveying that her words were necessary but insufficient to resolve the underlying tension. Posing against a pure white background.",
+      "negative_prompt": "panicked, overly aggressive look, messy hair, unprofessional appearance, low quality rendering"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full-body character portrait of Ulbert. Consistent Japanese anime/light novel illustration style, detailed, high quality. He stands with an air of imposing stillness, his posture radiating controlled power and deep concern. His expression is severe but contemplative. Ensure all costume elements are rendered with meticulous detail appropriate to his status in the setting. Posing against a pure white background.",
+      "negative_prompt": "smiling, overly relaxed pose, chaotic energy, low contrast, poorly drawn hands"
+    },
+    {
+      "character_id": "贰式炎雷",
+      "character_name": "Nihonrai (Two-Style Thunder)",
+      "prompt": "Three-quarter body character portrait of Nihonrai. Consistent Japanese anime/light novel illustration style, detailed, high quality. He should be depicted in a state of coiled energy—the adrenaline aftermath of conflict, but currently restrained. His expression is intense and watchful. Focus on the dynamic lines of his costume elements even when standing still. Posing against a pure white background.",
+      "negative_prompt": "looking bored, too messy, overly aggressive stance (needs restraint), faded colors"
+    },
+    {
+      "character_id": "Emerald Tablet",
+      "character_name": "Emerald Tablet",
+      "prompt": "Full-body character portrait of Emerald Tablet. Consistent Japanese anime/light novel illustration style, detailed, high quality. The character should appear collected but deeply affected by the preceding events. Their pose is measured and defensive, suggesting they are processing overwhelming emotional weight. Maintain consistency in their costume design relative to the world's lore. Posing against a pure white background.",
+      "negative_prompt": "panicked or crying, overly dramatic poses, simple/flat shading, lack of character depth"
+    }
+  ]
+}

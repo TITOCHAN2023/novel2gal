@@ -1,0 +1,22 @@
+{
+  "id": "perorochinno_001",
+  "name": "佩罗罗奇诺 (Perorochinno)",
+  "aliases": [],
+  "age": "",
+  "identity": "拥有特殊角色特效的玩家/角色",
+  "traits": [
+    "炫耀性",
+    "浮夸",
+    "信息敏感",
+    "主导欲强",
+    "环境适应力强"
+  ],
+  "speech_style": "语气活泼，带有解释和展示性的口吻；但在被指出错误后，会转为低落、顺从的道歉式口吻。",
+  "abilities": [
+    "拥有多种“付费嵌入”的角色特效（如翅膀、铠甲等）",
+    "具备关于游戏信息源可靠性和资源获取机制的知识储备",
+    "能快速识别和确认当前环境的关键规则或地点性质",
+    "可通过特殊渠道（讯息）传递关键的环境变化信息"
+  ],
+  "appearance_summary": "A character resembling a raptor head, with wings on its back, clad in magnificent golden armor. (Cooling/Shiny aesthetic)"
+}

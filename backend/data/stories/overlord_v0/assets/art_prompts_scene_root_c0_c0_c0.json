@@ -1,0 +1,32 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic establishing shot (16:9 aspect ratio) of a modern, high-stakes conference room. The atmosphere is thick with tension; the lighting should be dramatic and somewhat oppressive, suggesting an unspoken confrontation. Details should include expensive, dark wood paneling on the walls, polished, reflective floor, and a large, imposing conference table in the center. Strategic overhead lighting casts deep shadows, highlighting dust motes in the air. The overall mood is tense, weighty, and serious. Day time setting.",
+    "negative_prompt": "people, characters, overly bright, cheerful, messy, abstract, cartoon, low detail, watermark"
+  },
+  "character_sprites": [
+    {
+      "character_id": "旅人",
+      "character_name": "Traveler",
+      "prompt": "Full body portrait of the Traveler. Anime/light novel illustration style, highly detailed, high quality. The character should be standing in a ready or contemplative posture, conveying restrained tension and deep thought. Maintain consistent costume design. Lighting should match the dramatic, shadow-heavy mood of the conference room background (daytime, indoor). White/pure color background for this sprite sheet.",
+      "negative_prompt": "background elements, clutter, overly smiling, casual, wrong outfit details"
+    },
+    {
+      "character_id": "铃木悟",
+      "character_name": "Satoru Suzuki",
+      "prompt": "Half-body portrait of Satoru Suzuki. Anime/light novel illustration style, highly detailed, high quality. He should be positioned in a subtly aggressive or challenging posture, exuding controlled tension. Focus on his facial expression—intense and calculating. Maintain consistent costume design. Lighting must match the dramatic, shadow-heavy mood (daytime, indoor). White/pure color background for this sprite sheet.",
+      "negative_prompt": "background elements, overly emotional, messy hair, smiling, casual clothing"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Three-quarter body portrait of Ulbert. Anime/light novel illustration style, highly detailed, high quality. He should appear imposing and watchful, adopting a stance that suggests underlying power or authority within the tense setting. Focus on conveying his inherent gravity. Maintain consistent costume design. Lighting must match the dramatic, shadow-heavy mood (daytime, indoor). White/pure color background for this sprite sheet.",
+      "negative_prompt": "background elements, overly aggressive pose, cartoonish features, weak lighting, casual demeanor"
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mi",
+      "prompt": "Half-body portrait of Tachi Mi. Anime/light novel illustration style, highly detailed, high quality. She should have an expression that suggests deep involvement or slight discomfort amid the tension. Her posture should be poised but slightly guarded. Maintain consistent costume design. Lighting must match the dramatic, shadow-heavy mood (daytime, indoor). White/pure color background for this sprite sheet.",
+      "negative_prompt": "background elements, exaggerated emotion, distracting accessories, low detail, looking away"
+    }
+  ]
+}

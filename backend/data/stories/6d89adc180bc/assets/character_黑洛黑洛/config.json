@@ -1,0 +1,21 @@
+{
+  "id": "character_id_placeholder",
+  "name": "黑洛黑洛",
+  "aliases": [],
+  "age": "",
+  "identity": "史莱姆生物",
+  "traits": [
+    "思维活跃",
+    "逻辑性强",
+    "善于分析语言结构",
+    "对游戏文化有一定了解",
+    "略带优越感/戏谑"
+  ],
+  "speech_style": "在讨论中会展现出极强的学术性和条理性，尤其擅长从字源和发音角度进行论证。同时，在涉及日常或娱乐话题时，会流露出对游戏机制的了解，语气带着一丝优越感和戏谑。",
+  "abilities": [
+    "易位构词的知识储备（理论层面）",
+    "组队成员身份",
+    "观察并询问队友状态的能力"
+  ],
+  "appearance_summary": "Slime body, intelligent demeanor. (Updated: Shows an air of knowing amusement when discussing game mechanics.)"
+}

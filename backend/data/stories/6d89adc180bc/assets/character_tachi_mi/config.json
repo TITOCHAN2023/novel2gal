@@ -1,0 +1,20 @@
+{
+  "id": "tachi_mi",
+  "name": "塔其米 (Tachimi)",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "观察力强",
+    "引导性",
+    "冷静",
+    "实力强大（公会顶尖战力）",
+    "战斗经验丰富（超规格玩家）"
+  ],
+  "speech_style": "（待补充）",
+  "abilities": [
+    "魔法感应器官（用于环境排查）",
+    "极高的战斗生存能力（能毫发无伤摆脱BOSS攻击并反击）"
+  ],
+  "appearance_summary": ""
+}

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import cytoscape from 'cytoscape';
 import './GraphView.css';
 
-const API_BASE = `http://${window.location.hostname}:8080`;
+const API_BASE = '';
 
 interface GraphNode {
   id: string;
@@ -10,6 +10,17 @@ interface GraphNode {
   type: 'character' | 'location' | 'rule';
   traits?: string[];
   is_player?: boolean;
+  description?: string;
+  sprite?: string;
+  card_preview?: string;
+  [key: string]: unknown;
+}
+
+interface GraphEdge {
+  source: string;
+  target: string;
+  label: string;
+  type: string;
   description?: string;
 }
 
@@ -29,6 +40,55 @@ export default function GraphView({ storyId, onClose }: Props) {
   const cyRef = useRef<cytoscape.Core | null>(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  // 全量数据缓存，用于渐进展开
+  const allNodesRef = useRef<GraphNode[]>([]);
+  const allEdgesRef = useRef<GraphEdge[]>([]);
+  const expandedRef = useRef<Set<string>>(new Set());
+
+  // 渐进展开：点击角色节点 → 显示其关联的边和邻居节点
+  const expandNode = useCallback((nodeId: string) => {
+    const cy = cyRef.current;
+    if (!cy || expandedRef.current.has(nodeId)) return;
+    expandedRef.current.add(nodeId);
+
+    const nodeIds = new Set(cy.nodes().map((n) => n.id()));
+    const newElements: cytoscape.ElementDefinition[] = [];
+
+    // 找到与此节点关联的所有边
+    for (const edge of allEdgesRef.current) {
+      if (edge.source !== nodeId && edge.target !== nodeId) continue;
+      // 添加边的另一端节点（如果还没显示）
+      const otherId = edge.source === nodeId ? edge.target : edge.source;
+      if (!nodeIds.has(otherId)) {
+        const otherNode = allNodesRef.current.find((n) => n.id === otherId);
+        if (otherNode) {
+          newElements.push({ data: { ...otherNode } });
+          nodeIds.add(otherId);
+        }
+      }
+      // 添加边（如果两端都在图中）
+      if (nodeIds.has(edge.source) && nodeIds.has(edge.target)) {
+        const edgeId = `${edge.source}-${edge.target}-${edge.type}`;
+        if (!cy.getElementById(edgeId).length) {
+          newElements.push({ data: { id: edgeId, ...edge } });
+        }
+      }
+    }
+
+    if (newElements.length > 0) {
+      cy.add(newElements);
+      // 重新布局（只影响新节点）
+      cy.layout({
+        name: 'cose',
+        animate: true,
+        animationDuration: 300,
+        nodeRepulsion: () => 6000,
+        idealEdgeLength: () => 100,
+        gravity: 0.3,
+        fit: true,
+      } as cytoscape.CoseLayoutOptions).run();
+    }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -39,32 +99,28 @@ export default function GraphView({ storyId, onClose }: Props) {
         const data = await resp.json();
         if (cancelled) return;
 
-        const elements: cytoscape.ElementDefinition[] = [];
+        const nodes: GraphNode[] = data.nodes || [];
+        const edges: GraphEdge[] = data.edges || [];
+        allNodesRef.current = nodes;
+        allEdgesRef.current = edges;
+        expandedRef.current = new Set();
 
-        for (const node of data.nodes || []) {
-          elements.push({
-            data: {
-              id: node.id,
-              label: node.label,
-              type: node.type,
-              ...node,
-            },
-          });
+        // 初始只显示角色节点（不显示地点和规则，减少杂乱）
+        const initialElements: cytoscape.ElementDefinition[] = [];
+        const characterIds = new Set<string>();
+
+        for (const node of nodes) {
+          if (node.type === 'character') {
+            initialElements.push({ data: { ...node } });
+            characterIds.add(node.id);
+          }
         }
 
-        for (const edge of data.edges || []) {
-          // 只添加两端节点都存在的边
-          const nodeIds = new Set((data.nodes || []).map((n: GraphNode) => n.id));
-          if (nodeIds.has(edge.source) && nodeIds.has(edge.target)) {
-            elements.push({
-              data: {
-                source: edge.source,
-                target: edge.target,
-                label: edge.label,
-                type: edge.type,
-                ...edge,
-              },
-            });
+        // 角色之间的直接关系边也显示
+        for (const edge of edges) {
+          if (characterIds.has(edge.source) && characterIds.has(edge.target)) {
+            const edgeId = `${edge.source}-${edge.target}-${edge.type}`;
+            initialElements.push({ data: { id: edgeId, ...edge } });
           }
         }
 
@@ -72,7 +128,7 @@ export default function GraphView({ storyId, onClose }: Props) {
 
         const cy = cytoscape({
           container: containerRef.current,
-          elements,
+          elements: initialElements,
           style: [
             {
               selector: 'node',
@@ -89,8 +145,9 @@ export default function GraphView({ storyId, onClose }: Props) {
                 height: (ele: cytoscape.NodeSingular) =>
                   ele.data('is_player') ? 40 : ele.data('type') === 'character' ? 30 : 20,
                 'border-width': (ele: cytoscape.NodeSingular) =>
-                  ele.data('is_player') ? 3 : 0,
-                'border-color': '#fff',
+                  ele.data('is_player') ? 3 : expandedRef.current.has(ele.id()) ? 2 : 0,
+                'border-color': (ele: cytoscape.NodeSingular) =>
+                  ele.data('is_player') ? '#fff' : '#e8c170',
               } as cytoscape.Css.Node,
             },
             {
@@ -125,6 +182,11 @@ export default function GraphView({ storyId, onClose }: Props) {
           } as cytoscape.CoseLayoutOptions,
         });
 
+        // 双击角色节点 → 展开关联节点
+        cy.on('dbltap', 'node', (e) => {
+          expandNode(e.target.id());
+        });
+
         cy.on('tap', 'node', (e) => {
           setSelected(e.target.data());
         });
@@ -150,7 +212,7 @@ export default function GraphView({ storyId, onClose }: Props) {
       cancelled = true;
       cyRef.current?.destroy();
     };
-  }, [storyId]);
+  }, [storyId, expandNode]);
 
   return (
     <div className="graph-view">
@@ -160,8 +222,9 @@ export default function GraphView({ storyId, onClose }: Props) {
           <span className="graph-legend" style={{ color: NODE_COLORS.character }}>● 角色</span>
           <span className="graph-legend" style={{ color: NODE_COLORS.location }}>● 地点</span>
           <span className="graph-legend" style={{ color: NODE_COLORS.rule }}>● 规则</span>
+          <span className="graph-legend" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10 }}>双击角色展开关联</span>
         </div>
-        <button className="graph-view__close" onClick={onClose}>✕</button>
+        <button className="graph-view__close" onClick={onClose}>&#10005;</button>
       </div>
 
       <div className="graph-view__container" ref={containerRef}>
@@ -170,7 +233,6 @@ export default function GraphView({ storyId, onClose }: Props) {
 
       {selected && (
         <div className="graph-view__detail">
-          {/* 头部：名称 + 立绘 */}
           <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
             {selected.sprite ? (
               <img
@@ -185,7 +247,7 @@ export default function GraphView({ storyId, onClose }: Props) {
           </div>
 
           {Object.entries(selected).map(([key, value]: [string, unknown]) => {
-            if (['id', 'label', 'source', 'target', 'sprite', 'card_preview'].includes(key)) return null;
+            if (['id', 'label', 'source', 'target', 'sprite', 'card_preview', 'background'].includes(key)) return null;
             if (value === undefined || value === null || value === '' || value === false) return null;
             const display = Array.isArray(value) ? value.join(', ') : String(value);
             if (!display || display === '0') return null;

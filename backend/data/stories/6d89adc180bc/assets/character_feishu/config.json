@@ -1,0 +1,29 @@
+{
+  "id": "feishu_id",
+  "name": "泡泡茶壶 (Feishu)",
+  "aliases": [],
+  "age": "",
+  "identity": "身份/职业",
+  "traits": [
+    "外向",
+    "健谈",
+    "参与感强",
+    "负责任",
+    "经验丰富",
+    "战术指挥官"
+  ],
+  "speech_style": "语气轻松，带有调侃和好奇心，喜欢用疑问句引导话题，但在关键时刻能表现出专业、沉稳和果断的战术指挥风格。近期展现出谦虚和接受责任的姿态。",
+  "abilities": [
+    "主动社交能力",
+    "观察力",
+    "战术分析/汇报",
+    "高级魔法指令执行（如《收束魔法》宏）",
+    "战斗预判与应变",
+    "群体Debuff消除",
+    "战场指挥与资源调配（包括对特定魔法的理解和运用，如防御、治疗辅助等）",
+    "仇恨值引导与战术吸引（能主动将敌方注意力引向自己或指定队友）",
+    "关键时刻爆发性的战斗指令下达",
+    "接受并适应新的组织角色（公会长）"
+  ],
+  "appearance_summary": "A teapot character, generally cheerful and engaging. Highly capable in combat, often taking the lead in strategic maneuvers. Can appear slightly tired or humble when discussing responsibilities."
+}

@@ -20,9 +20,11 @@ import logging
 try:
     from ..db.store import NovelStore
     from ..config.llm_client import LLMClient
+    from ..parser.schemas import UPDATE_CHARACTER_CARD_SCHEMA
 except ImportError:
     from db.store import NovelStore
     from config.llm_client import LLMClient
+    from parser.schemas import UPDATE_CHARACTER_CARD_SCHEMA
 
 logger = logging.getLogger(__name__)
 
@@ -114,7 +116,7 @@ async def setup_player_character(
         player_name = player_input or "旅人"
         logger.info(f"创建新角色: {player_name}")
 
-        if False and llm:  # 暂时跳过 LLM 生成，用默认模板
+        if llm:
             # 用 LLM 生成角色卡
             rules = await store.get_all_world_rules()
             rules_text = "\n".join(f"- [{r.get('category','')}] {r.get('description','')}" for r in rules)
@@ -126,7 +128,7 @@ async def setup_player_character(
                 player_name=player_name,
             )
 
-            card_data = await llm.chat_json(system=prompt, user=f"请为 {player_name} 创建角色卡。")
+            card_data = await llm.chat_json(system=prompt, user=f"请为 {player_name} 创建角色卡。", schema=UPDATE_CHARACTER_CARD_SCHEMA)
         else:
             # Mock: 无 LLM 时使用默认角色卡
             card_data = {

@@ -1,0 +1,32 @@
+{
+  "scene_background": {
+    "prompt": "A vast, ruined hall setting, centered around an imposing throne made of unknown, glowing material. The throne emits a faint, ethereal, divine afterglow (golden/pale blue hue) that permeates the air, creating dust motes visible in the shafts of light. The architecture is grand, ancient, and slightly overgrown with mystical energy traces. Wide panoramic view, cinematic composition, 16:9 aspect ratio. The atmosphere should transition from initial chaotic excitement to a solemn, contemplative quietude. Natural daylight filtering through high, broken stained-glass windows, creating dramatic volumetric lighting and long shadows on the cracked stone floor. Highly detailed, epic fantasy ruins aesthetic.",
+    "negative_prompt": "characters, people, modern objects, clutter, low detail, cartoonish, messy composition"
+  },
+  "character_sprites": [
+    {
+      "character_id": "Satoru",
+      "character_name": "铃木悟 (Suzuki Satoru)",
+      "prompt": "Full body portrait of Suzuki Satoru. He is standing in a thoughtful, slightly reserved pose, perhaps with one hand resting near his hip or holding an object thoughtfully. His expression should be complex—a mix of exhaustion from battle, intellectual curiosity, and cautious contemplation regarding the new power structure. Maintain consistent character design. Outfit details: (Describe his typical combat/investigative gear). Lighting must match the scene's divine afterglow, casting subtle highlights on him. Clean white background for sprite sheet style.",
+      "negative_prompt": "overly emotional, aggressive pose, messy clothing, bad anatomy, low resolution"
+    },
+    {
+      "character_id": "Tachimi",
+      "character_name": "塔其米 (Tachimi)",
+      "prompt": "Three-quarter body portrait of Tachimi. She stands with a posture that suggests deep thought and careful assessment, looking towards the throne or off into the distance with an observant gaze. Her expression is intelligent, composed, and pragmatic. Outfit details: (Describe her typical attire). Lighting should interact with her silhouette, emphasizing her grace amidst the ruins. Clean white background.",
+      "negative_prompt": "sweating, panicked look, aggressive stance, distracting elements, bad anatomy"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+      "prompt": "Half-body portrait of Ulbert Alain Ode. He stands with an air of measured dignity, observing the scene critically. His expression should convey a blend of inherent nobility and perhaps subtle ambition or skepticism regarding the sudden shift in power. Outfit details: (Describe his formal/noble attire). The lighting should catch the quality of his garments and give depth to his features. Clean white background.",
+      "negative_prompt": "too happy, casual pose, messy hair, overly dramatic effect, childish look"
+    },
+    {
+      "character_id": "Bunmu",
+      "character_name": "布钮萌 (Bunmu)",
+      "prompt": "Full body portrait of Bunmu. She stands confidently, but the confidence is tempered by the weight of the situation—she is assessing the power dynamic. Her pose should be poised and ready, perhaps with a slight tilt of the head indicating calculation. Outfit details: (Describe her unique/distinctive outfit). Lighting should highlight her presence without overpowering the scene's solemnity. Clean white background.",
+      "negative_prompt": "overly playful, panicked, unkempt, poorly drawn costume elements, low detail"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tachi_san",
+  "name": "飞鼠所属团体的团长和恩人",
+  "aliases": [],
+  "age": "",
+  "identity": "神秘的组织领导者/恩人",
+  "traits": [
+    "热衷变身英雄",
+    "夸张的表演欲",
+    "具有影响力",
+    "扮演组织者角色",
+    "擅长主持会议"
+  ],
+  "speech_style": "语气上带有不确定感和询问性，擅长以组织者的身份引导话题，并负责宣布重要流程（如联络会开始）。",
+  "abilities": [
+    "制造夸张特效（如身后爆炸或文字浮现）",
+    "扮演圣骑士形象",
+    "主持大型会议/联络会"
+  ],
+  "appearance_summary": "A charismatic leader who loves transforming into heroes, often appearing in a Paladin outfit. He is accompanied by exaggerated visual effects like explosions or floating text."
+}

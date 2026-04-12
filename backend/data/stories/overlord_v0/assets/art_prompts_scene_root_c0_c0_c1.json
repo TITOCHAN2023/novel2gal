@@ -1,0 +1,38 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 shot of a modern, high-end conference room. The room has dark wood paneling, polished surfaces, and large windows showing muted daylight outside (daytime setting). There are several empty, expensive-looking chairs arranged around a long, polished conference table. The lighting is complex: overhead recessed lighting provides sharp, clinical illumination, but soft, diffused natural light enters from the side windows, creating subtle highlights on the wood and glass. The atmosphere should feel tense and professionally charged, with details suggesting corporate power struggles—perhaps some scattered papers or water glasses that are slightly out of focus to enhance depth. Focus on rich textures and a sense of controlled tension.",
+    "negative_prompt": "people, characters, clutter, messy, bright colors, cartoonish, watermark"
+  },
+  "character_sprites": [
+    {
+      "character_id": "旅人",
+      "character_name": "Traveler",
+      "prompt": "Full-body character sprite sheet of the Traveler. Japanese anime/light novel illustration style, detailed, high quality. The character should be standing in a neutral, ready stance, facing slightly towards the viewer (3/4 angle). They are wearing their established outfit. The expression is watchful, composed, and slightly wary, reflecting an internal readiness for conflict or tension. Lighting should match the scene's indoor daylight: clear, directional light highlighting key features while maintaining depth. Pure white background.",
+      "negative_prompt": "blurry, messy hair, exaggerated emotions, inappropriate clothing, low detail"
+    },
+    {
+      "character_id": "铃木悟",
+      "character_name": "Sato Suzuki",
+      "prompt": "Upper body character sprite sheet of Sato Suzuki. Japanese anime/light novel illustration style, detailed, high quality. He is positioned in a semi-relaxed but intensely focused posture, perhaps leaning slightly on the table or standing with arms crossed, conveying intellectual dominance mixed with underlying tension. His expression should be calculating, observant, and subtly challenging. Outfit details must match his established professional attire. Lighting should utilize the cool, overhead ambient light of the conference room setting. Pure white background.",
+      "negative_prompt": "overly aggressive pose, exaggerated smile, casual wear, poor anatomy, low detail"
+    },
+    {
+      "character_id": "塔其·米",
+      "character_name": "Tachi Mei",
+      "prompt": "Half-body character sprite sheet of Tachi Mei. Japanese anime/light novel illustration style, detailed, high quality. She is depicted with a poised yet guarded posture, perhaps resting one hand near her hip or on the table edge. Her expression should be intelligent, critical, and slightly aloof, observing everyone else in the room. Outfit details must reflect her character's elegance and status. Lighting: Soft, controlled indoor lighting that emphasizes her features subtly. Pure white background.",
+      "negative_prompt": "overly emotional face, messy clothing, childish appearance, distracting background elements, poor rendering"
+    },
+    {
+      "character_id": "Ulbert",
+      "character_name": "Ulbert",
+      "prompt": "Full-body character sprite sheet of Ulbert. Japanese anime/light novel illustration style, detailed, high quality. He is standing in a powerful, imposing stance, radiating quiet authority. His expression should be stern and unreadable, suggesting deep contemplation or controlled power. Ensure his costume details are consistent with his established persona. Lighting: Dramatic, slightly shadowed lighting that emphasizes his silhouette and presence within the room's structure. Pure white background.",
+      "negative_prompt": "slouching posture, friendly smile, casual clothes, weak build, low resolution"
+    },
+    {
+      "character_id": "贰式炎雷",
+      "character_name": "Nishiki Enrai (Two-Style Flame Thunder)",
+      "prompt": "Upper body character sprite sheet of Nishiki Enrai. Japanese anime/light novel illustration style, detailed, high quality. He should be depicted in a state of restrained energy; perhaps standing slightly apart, with an intense gaze directed forward. His expression is serious and highly alert, ready to act. Ensure his unique costume details are rendered sharply. Lighting: A mix of cool ambient light contrasting with subtle hints of internal power/energy glow around him (if appropriate for the character design). Pure white background.",
+      "negative_prompt": "overly chaotic pose, smiling widely, civilian clothes, lack of tension, bad proportions"
+    }
+  ]
+}

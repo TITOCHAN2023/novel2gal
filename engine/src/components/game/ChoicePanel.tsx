@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { sendToBackend } from '../../hooks/useBackend';
 import type { Choice } from '../../engine/types';
@@ -52,6 +52,26 @@ export default function ChoicePanel() {
   const handleAnnotationCancel = useCallback(() => {
     setAnnotatingChoice(null);
     setAnnotationText('');
+  }, []);
+
+  // 长按手势（触屏设备替代右键）
+  const longPressTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const longPressChoice = useRef<Choice | null>(null);
+
+  const handleTouchStart = useCallback((choice: Choice) => {
+    longPressChoice.current = choice;
+    longPressTimer.current = setTimeout(() => {
+      if (longPressChoice.current) {
+        setAnnotatingChoice(longPressChoice.current);
+        setAnnotationText('');
+        longPressChoice.current = null;
+      }
+    }, 600); // 600ms 长按
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    clearTimeout(longPressTimer.current);
+    longPressChoice.current = null;
   }, []);
 
   if (!showingChoices || !script) return null;
@@ -113,9 +133,12 @@ export default function ChoicePanel() {
             className="choice-panel__btn"
             onClick={() => handleLeftClick(choice)}
             onContextMenu={(e) => handleRightClick(e, choice)}
+            onTouchStart={() => handleTouchStart(choice)}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
           >
             <span className="choice-panel__btn-text">{choice.text}</span>
-            <span className="choice-panel__btn-hint">右键添加备注</span>
+            <span className="choice-panel__btn-hint">长按/右键添加备注</span>
           </button>
         ))}
       </div>

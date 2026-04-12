@@ -153,6 +153,20 @@ echo "════════════════════════�
 echo -e "\n${YELLOW}[检查]${NC} 依赖环境..."
 check_llm
 
+# TTS 检查
+if [ "${TTS_ENABLED:-false}" = "true" ]; then
+  echo -e "  ${GREEN}✓${NC} TTS 已启用 (provider: ${TTS_PROVIDER:-edge_tts})"
+else
+  echo -e "  ${DIM}○${NC} TTS 未启用 (设置 TTS_ENABLED=true 开启)"
+fi
+
+# AnyGen 检查
+if [ -n "${ANYGEN_API_KEY:-}" ]; then
+  echo -e "  ${GREEN}✓${NC} AnyGen 生图已配置"
+else
+  echo -e "  ${DIM}○${NC} AnyGen 未配置 (无生图)"
+fi
+
 if [ ! -d "$PROJECT_ROOT/backend/.venv" ]; then
   echo -e "  ${YELLOW}~${NC} 创建 Python 虚拟环境..."
   (cd "$PROJECT_ROOT/backend" && uv venv .venv && source .venv/bin/activate && \

@@ -1,0 +1,18 @@
+{
+  "id": "ulbert_alain_ode",
+  "name": "乌尔贝特·阿兰·奥德 (Ulbert Alain Ode)",
+  "aliases": [],
+  "age": "",
+  "identity": "歼灭系攻击魔法职业的代表，山羊头恶魔。",
+  "traits": [
+    "质疑精神",
+    "探究心强",
+    "批判性思维",
+    "具有威慑力"
+  ],
+  "speech_style": "语气严肃，直指核心问题，带有审问和要求解释的意味。",
+  "abilities": [
+    "歼灭系攻击魔法（代表职业）"
+  ],
+  "appearance_summary": "A demon with a goat head."
+}

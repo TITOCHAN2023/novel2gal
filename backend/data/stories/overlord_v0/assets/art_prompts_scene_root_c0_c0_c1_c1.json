@@ -1,0 +1,14 @@
+{
+  "scene_background": {
+    "prompt": "A wide, cinematic 16:9 aspect ratio illustration of a modern yet slightly arcane meeting room. The architecture is grand but somewhat imposing, featuring dark wood paneling, polished stone floors reflecting ambient light, and large windows showing diffused daylight filtering through (daytime). There are several expensive, empty chairs arranged around a large central conference table made of highly polished, dark material. Subtle elements suggesting advanced technology mixed with old-world mystery—perhaps some unusual crystal fixtures or geometric patterns etched into the walls—should be visible to enhance the 'arcane' feel. The atmosphere is tense and expectant; the lighting should create deep shadows contrasting with bright highlights on reflective surfaces, emphasizing the lingering tension after a discussion. Focus on rich textures and depth of field.",
+    "negative_prompt": "people, characters, messy, cartoon, overly bright, fantasy landscape, outdoor setting"
+  },
+  "character_sprites": [
+    {
+      "character_id": "贰式炎雷",
+      "character_name": "贰式炎雷",
+      "prompt": "Full-body character sprite illustration of Eryth Flamel (贰式炎雷). The style must be Japanese anime/light novel illustration, detailed, high quality. She is standing in a commanding, slightly forward-leaning pose, directly addressing the viewer/room. Her expression is intense, passionate, and highly focused, suggesting she is making a critical declaration. Maintain her established costume details, ensuring the lighting reflects the ambient daylight filtering into the room (daytime). The sprite must be isolated on a pure white background, showing full body or 3/4 view facing the viewer.",
+      "negative_prompt": "blurry, low quality, multiple poses, complex backgrounds, casual clothes"
+    }
+  ]
+}

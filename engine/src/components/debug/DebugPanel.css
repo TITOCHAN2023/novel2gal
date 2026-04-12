@@ -1,6 +1,6 @@
 .debug-panel {
   position: fixed;
-  top: 12px;
+  bottom: 12px;
   left: 12px;
   z-index: 9999;
   width: 480px;
